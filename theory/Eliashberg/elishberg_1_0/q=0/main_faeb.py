@@ -55,7 +55,6 @@ class irfunc:
         self.uhat_B = self.basis_B.uhat(self.M_B.sampling_points)
         self.ul_F_tau0 = self.basis_F.u(0.0)
 
-
 class gfunctions:
     def __init__(self, b, p, i):
         self.set_gkf_m(b, p, i)
@@ -177,7 +176,6 @@ class gfunctions:
         plt.savefig("figure/abs(b.iw_B)_compare(abs(self.dkf),abs(d_kf).png")
         plt.clf()
         
-
 class fmc_anisotropic_eliashberg_BCS:
     def __init__(self, g, b, p):
         self.set_delta0(g, b, p)
