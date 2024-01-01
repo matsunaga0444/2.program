@@ -6,7 +6,7 @@ class parameters:
     def __init__(self):
         self.nk1, self.nk2, self.nk3 = 10, 10, 1 
         self.beta_min   = 12
-        self.beta_max   = 10000
+        self.beta_max   = 100000
         self.nbeta  = 30
         self.mu     = 0
         self.v0 = -1.0
