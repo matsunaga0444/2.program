@@ -4,25 +4,23 @@ import matplotlib.pyplot as plt
 
 class parameters:
     def __init__(self):
-        self.nk1, self.nk2, self.nk3 = 4, 4, 1 
-        self.beta_min   = 20
-        self.beta_max   = 200
-        self.nbeta  = 5
-        self.mu     = 0.1
-        self.g0ph   = 2.0
+        self.nk1, self.nk2, self.nk3 = 10, 10, 1 
+        self.beta_min   = 12
+        self.beta_max   = 10000
+        self.nbeta  = 30
+        self.mu     = 0
+        self.v0 = -1.0
         self.qf_phonon  =  1.0
-        self.damp_phonon   = 0.0
-        self.damp_electron = 0.0
         self.mixing     = 0.0
         self.lamb = 10000
         self.nk = self.nk1 *self.nk2 * self.nk3
         self.dk1, self.dk2, self.dk3 = 1./self.nk1, 1./self.nk2, 1./self.nk3
         k1, k2, k3 = meshgrid(arange(self.nk1)*self.dk1, arange(self.nk2)*self.dk2, arange(self.nk3)*self.dk3)
         self.k1, self.k2, self.k3 = k1.flatten(), k2.flatten(), k3.flatten()
-        self.fmc_max  = 0.01
+        self.fmc_max  = 0.026
         self.fmc_min  = 0.0
-        self.nfmc  = 20
-        self.v0 = -1.0
+        self.nfmc  = 10
+        self.nscf = 1000
 
 class irfunc:
     def __init__(self, Lambda, beta, eps=1e-7):
@@ -189,7 +187,7 @@ class fmc_anisotropic_eliashberg_BCS:
         self.delta   = zeros(b.niw_F)[:,None] * zeros(p.nk)[None,:]
         self.delta_temp = self.delta0
         self.iter = 0
-        for n in range(500):
+        for n in range(p.nscf):
             if linalg.norm(self.delta_temp-self.delta)/linalg.norm(self.delta) <= 1e-6: break
             if abs(self.delta_temp[len(self.delta_temp)//2,0]) <= 1e-3: break
             self.iter = self.iter + 1
