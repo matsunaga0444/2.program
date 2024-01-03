@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 class parameters:
     def __init__(self):
-        self.nk1, self.nk2, self.nk3 = 64, 64, 1 
+        self.nk1, self.nk2, self.nk3 = 10, 10, 1 
         self.beta_min   = 4
         self.beta_max   = 1000
         self.nbeta  = 1
