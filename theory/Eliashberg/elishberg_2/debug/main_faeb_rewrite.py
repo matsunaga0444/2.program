@@ -200,21 +200,22 @@ class fmc_anisotropic_eliashberg_BCS:
             self.y_kt_zeta = fft.ifftn(self.y_rt_zeta,axes=(1,2,3))
             self.y_kt_zeta = self.y_kt_zeta.reshape(b.ntau_F, p.nk)
             self.y_kl_zeta = b.T_F.fit(self.y_kt_zeta)
-            self.y_kf_zeta = 1 + (((self.y_kl_zeta.T @ b.uhat_F).T) / (b.iw_F[:,None]*ones(p.nk)[None,:]))
+            self.y_kf_zeta = 1 + (((self.y_kl_zeta.T @ b.uhat_F).T) / (-1j * b.iw_F[:,None]*ones(p.nk)[None,:]))
+            print(shape(b.uhat_F),shape(b.uhat_B))
             self.zeta_temp=  (1-p.mixing)*self.y_kf_zeta + p.mixing*self.zeta
             self.zeta_temp= ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
             self.set_frt_chi(g, b, p)
-            self.y_rt_chi = -(p.g0ph**2 * g.drt*self.frt_chi).reshape(b.ntau_F,p.nk1,p.nk2,p.nk3) / p.nk
+            self.y_rt_chi = -(p.g0ph**2 * g.drt*self.frt_chi).reshape(b.ntau_B,p.nk1,p.nk2,p.nk3) / p.nk
             self.y_kt_chi = fft.ifftn(self.y_rt_chi,axes=(1,2,3))
-            self.y_kt_chi = self.y_kt_chi.reshape(b.ntau_F, p.nk)
+            self.y_kt_chi = self.y_kt_chi.reshape(b.ntau_B, p.nk)
             self.y_kl_chi = b.T_F.fit(self.y_kt_chi)
             self.y_kf_chi = (self.y_kl_chi.T @ b.uhat_F).T
             self.chi_temp=  (1-p.mixing)*self.y_kf_chi + p.mixing*self.chi
             #self.chi_temp=  zeros(b.niw_F)[:,None] * zeros(p.nk)[None,:]
             self.set_frt_delta_zeta(g, b, p)
-            self.y_rt_delta_zeta = (p.g0ph**2 * g.drt*self.frt_delta_zeta).reshape(b.ntau_F,p.nk1,p.nk2,p.nk3) / p.nk
+            self.y_rt_delta_zeta = (p.g0ph**2 * g.drt*self.frt_delta_zeta).reshape(b.ntau_B,p.nk1,p.nk2,p.nk3) / p.nk
             self.y_kt_delta_zeta = fft.ifftn(self.y_rt_delta_zeta,axes=(1,2,3))
-            self.y_kt_delta_zeta = self.y_kt_delta_zeta.reshape(b.ntau_F, p.nk)
+            self.y_kt_delta_zeta = self.y_kt_delta_zeta.reshape(b.ntau_B, p.nk)
             self.y_kl_delta_zeta = b.T_F.fit(self.y_kt_delta_zeta)
             self.y_kf_delta_zeta = (self.y_kl_delta_zeta.T @ b.uhat_F).T 
             self.delta_zeta_temp=  (1-p.mixing)*self.y_kf_delta_zeta + p.mixing*self.delta_zeta
@@ -232,13 +233,14 @@ class fmc_anisotropic_eliashberg_BCS:
         _ = (1/self.gkf_m + self.chi) * (1/self.gkf_p + self.chi) + self.delta_zeta*conj(self.delta_zeta)
         #self.fkf_zeta = (((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ ones(b.niw_F)[:,None] * ones(p.nk)[None,:])+(g.ek_p-g.ek_m)/2)/_
         #self.fkf_zeta = (((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ (ones(b.niw_F)[:,None] * ones(p.nk)[None,:]))+(g.ek_p-g.ek_m)/2)/_
-        self.fkf_zeta = (((-1j * b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ self.zeta[:,:] )+(g.ek_m-g.ek_p)/2)/_
+        self.fkf_zeta = (((-1j * b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ self.zeta[:,:] ) + (g.ek_m-g.ek_p)/2)/_
+        #print(-1j * b.iw_F[:,None]*ones(b.niw_F)[None,:])
         #print(abs(self.zeta - ones(b.niw_F)[:,None] * ones(p.nk)[None,:]))
         #self.fkf_zeta = (1j*((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@self.zeta)+(g.ek_p-g.ek_m)/2)/_
         self.fkl_zeta = b.M_F.fit(self.fkf_zeta)
-        self.fkt_zeta = dot(b.ul_F_tau_F, self.fkl_zeta)
-        self.fkt_zeta = self.fkt_zeta.reshape(b.ntau_F, p.nk1, p.nk2, p.nk3)
-        self.frt_zeta = fft.fftn(self.fkt_zeta, axes=(1,2,3)).reshape(b.ntau_F, p.nk)
+        self.fkt_zeta = dot(b.ul_F_tau_B, self.fkl_zeta)
+        self.fkt_zeta = self.fkt_zeta.reshape(b.ntau_B, p.nk1, p.nk2, p.nk3)
+        self.frt_zeta = fft.fftn(self.fkt_zeta, axes=(1,2,3)).reshape(b.ntau_B, p.nk)
     def set_frt_chi(self, g, b, p):
         #_ = (1/self.gkf_m) * (1/self.gkf_p) + self.delta_zeta*conj(self.delta_zeta)
         #_ = 1/(self.gkf_p*conj(self.gkf_m)) + self.delta_zeta*conj(self.delta_zeta)
