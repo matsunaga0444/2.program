@@ -78,6 +78,7 @@ class gfunctions:
         # k,omega => k,irbasis => k,tau     => r,tau
         self.dkl = b.M_B.fit(self.dkf)
         self.d_kt = dot(b.ul_B_tau_B, self.dkl)
+        #print(shape(b.ul_B_tau_B), shape(b.ul_B_tau_F))
         self.d_kt = self.d_kt.reshape(b.ntau_B, p.nk1, p.nk2, p.nk3)
         self.drt = fft.fftn(self.d_kt, axes=(1,2,3)).reshape(b.ntau_B, p.nk)
     def debug(self, b, p):
@@ -201,9 +202,8 @@ class fmc_anisotropic_eliashberg_BCS:
             self.y_kt_zeta = self.y_kt_zeta.reshape(b.ntau_F, p.nk)
             self.y_kl_zeta = b.T_F.fit(self.y_kt_zeta)
             self.y_kf_zeta = 1 + (((self.y_kl_zeta.T @ b.uhat_F).T) / (-1j * b.iw_F[:,None]*ones(p.nk)[None,:]))
-            print(shape(b.uhat_F),shape(b.uhat_B))
             self.zeta_temp=  (1-p.mixing)*self.y_kf_zeta + p.mixing*self.zeta
-            self.zeta_temp= ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
+            #self.zeta_temp= ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
             self.set_frt_chi(g, b, p)
             self.y_rt_chi = -(p.g0ph**2 * g.drt*self.frt_chi).reshape(b.ntau_B,p.nk1,p.nk2,p.nk3) / p.nk
             self.y_kt_chi = fft.ifftn(self.y_rt_chi,axes=(1,2,3))
@@ -223,10 +223,10 @@ class fmc_anisotropic_eliashberg_BCS:
             #print("chi" ,n,  self.chi_temp[len(self.chi_temp)//2,0], linalg.norm(self.chi_temp-self.chi)/linalg.norm(self.chi))
             #print("delta" ,n,  self.delta_zeta_temp[len(self.delta_zeta_temp)//2,0], linalg.norm(self.delta_zeta_temp-self.delta_zeta)/linalg.norm(self.delta_zeta))
     def set_gkfs(self, g, b, p):
-        self.gkf_m = 1.0 / ( b.iw_F[:,None] * self.zeta + (g.ek_m[None,:]))
-        self.gkf_p = 1.0 / (-b.iw_F[:,None] * self.zeta + (g.ek_p[None,:]))
-        # self.gkf_m = 1.0 / ( b.iw_F[:,None]  + (g.ek_m[None,:]))
-        # self.gkf_p = 1.0 / (-b.iw_F[:,None]  + (g.ek_p[None,:]))
+        # self.gkf_m = 1.0 / ( b.iw_F[:,None] * self.zeta + (g.ek_m[None,:]))
+        # self.gkf_p = 1.0 / (-b.iw_F[:,None] * self.zeta + (g.ek_p[None,:]))
+        self.gkf_m = 1.0 / ( b.iw_F[:,None]  + (g.ek_m[None,:]))
+        self.gkf_p = 1.0 / (-b.iw_F[:,None]  + (g.ek_p[None,:]))
     def set_frt_zeta(self, g, b, p):
         #_ = (1/self.gkf_m) * (1/self.gkf_p) + self.delta_zeta*conj(self.delta_zeta)
         #_ = 1/(self.gkf_p*conj(self.gkf_m)) + self.delta_zeta*conj(self.delta_zeta)
