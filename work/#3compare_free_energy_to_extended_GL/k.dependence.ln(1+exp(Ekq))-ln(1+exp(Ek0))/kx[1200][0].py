@@ -80,11 +80,12 @@ kx, y = meshgrid(k1, y, indexing='ij')
 ky, kz = 1, 1
 
 for j in range(n3):
-    print(E_k_q_s(kx[1255][0], ky, kz, deltas[j], qs[1], y[0][0], Bs[0]))
-    print(E_k_q_s(kx[1255][0], ky, kz, deltas[j], qs[0], y[0][0], Bs[0]))
-    print(exp(-1*beta*E_k_q_s(kx[1255][0], ky, kz, deltas[j], qs[1], y[0][0], Bs[0])))
-    print(exp(-1*beta*E_k_q_s(kx[1255][0], ky, kz, deltas[j], qs[0], y[0][0], Bs[0])))
-    f_temp = log(1+exp(-1*beta*E_k_q_s(kx[1255][0], ky, kz, deltas[j], qs[1], y[0][0], Bs[0])))-log(1+exp(-1*beta*E_k_q_s(kx[1255][0], ky, kz, deltas[j], qs[0], y[0][0], Bs[0])))
+    print(kx[1200][0])
+    print(E_k_q_s(kx[1200][0], ky, kz, deltas[j], qs[1], y[0][0], Bs[0]))
+    print(E_k_q_s(kx[1200][0], ky, kz, deltas[j], qs[0], y[0][0], Bs[0]))
+    print(exp(-1*beta*E_k_q_s(kx[1200][0], ky, kz, deltas[j], qs[1], y[0][0], Bs[0])))
+    print(exp(-1*beta*E_k_q_s(kx[1200][0], ky, kz, deltas[j], qs[0], y[0][0], Bs[0])))
+    f_temp = log(1+exp(-1*beta*E_k_q_s(kx[1200][0], ky, kz, deltas[j], qs[1], y[0][0], Bs[0])))-log(1+exp(-1*beta*E_k_q_s(kx[1200][0], ky, kz, deltas[j], qs[0], y[0][0], Bs[0])))
     f.append(f_temp)
 f = np.array(f)
 extended_GL = np.array(extended_GL)
@@ -93,13 +94,14 @@ extended_GL = np.array(extended_GL)
 #plot the figure of comparing free energy to extended GL
 for i in range(n0):
     plt.scatter(deltas, f[:], 5)
-    plt.savefig("figure/k.dependence.ln(1+exp(Ekq))-ln(1+exp(Ek0)).png")
+    plt.savefig("figure/kx[1200][0].png")
     plt.clf()
 
 ###################################
 ##output
-file = open("output/k.dependence.ln(1+exp(Ekq))-ln(1+exp(Ek0))", "w")
+file = open("output/kx[1200][0]", "w")
 file.write("##delta---ln(1+exp(Ekq))-ln(1+exp(Ek0))" + "\n")
 for j in range (n3):
     file.write(str(deltas[j]) + " " + str(f[j]) + " "  + "\n")
 file.close()
+
