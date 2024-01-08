@@ -22,7 +22,7 @@ class parameters:
         self.fmc_max  = 0.05
         self.fmc_min  = 0.0
         self.nfmc  = 1
-        self.nscf = 2
+        self.nscf = 3
 
 class irfunc:
     def __init__(self, Lambda, beta, eps=1e-7):
