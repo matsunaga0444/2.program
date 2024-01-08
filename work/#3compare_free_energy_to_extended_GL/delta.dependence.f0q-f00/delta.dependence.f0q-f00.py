@@ -66,6 +66,20 @@ def F0(qs,ans_q):
     f = e_k_spin(-1*kx, -1*ky, -1*kz, qs,-1, Bs[0]) - E_k_q_s(kx, ky, kz, ans_q, qs, -1, Bs[0])
     return sum(f)
 
+def F0_0(qs,ans_q):
+    k1 = -1 * np.pi + 2 * arange(N) * np.pi / (N)
+    kx = k1
+    ky, kz = 1, 1
+    f = e_k_spin(-1*kx, -1*ky, -1*kz, qs,-1, Bs[0])
+    return sum(f)
+
+def F0_1(qs,ans_q):
+    k1 = -1 * np.pi + 2 * arange(N) * np.pi / (N)
+    kx = k1
+    ky, kz = 1, 1
+    f = E_k_q_s(kx, ky, kz, ans_q, qs, -1, Bs[0])
+    return sum(f)
+
 def Fc(ans_q):
     return(N)*(ans_q**2)/V
 
@@ -85,12 +99,12 @@ extended_GL = np.array(extended_GL)
 #plot the figure of comparing free energy to extended GL
 for i in range(n0):
     plt.scatter(deltas, f[:], 5)
-    plt.savefig("figure/delta.dependent.f0q-f00.png")
+    plt.savefig("figure/delta.dependence.f0q-f00.png")
     plt.clf()
 
 ###################################
 ##output
-file = open("output/delta.dependent.f0q-f00", "w")
+file = open("output/delta.dependence.f0q-f00", "w")
 file.write("##delta---f0q-f00" + "\n")
 for j in range (n3):
     file.write(str(deltas[j]) + " " + str(f[j]) + " "  + "\n")
