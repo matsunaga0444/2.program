@@ -90,7 +90,7 @@ def free_energy(qs,ans_q):
 ##calculate_freeenergy
 f, extended_GL = [], []
 for j in range(n3):
-    f_temp = (F0_0(qs[1],deltas[j]) - F0_0(qs[0],deltas[j]))/N
+    f_temp = (F0_1(qs[1],deltas[j]) - F0_1(qs[0],deltas[j]))/N
     f.append(f_temp)
 f = np.array(f)
 extended_GL = np.array(extended_GL)
@@ -99,12 +99,12 @@ extended_GL = np.array(extended_GL)
 #plot the figure of comparing free energy to extended GL
 for i in range(n0):
     plt.scatter(deltas, f[:], 5)
-    plt.savefig("figure/delta.dependence.f0_0q-f0_00.png")
+    plt.savefig("figure/delta.dependence.f0_1q-f0_10.png")
     plt.clf()
 
 ###################################
 ##output
-file = open("output/delta.dependence.f0_0q-f0_00", "w")
+file = open("output/delta.dependence.f0_1q-f0_10", "w")
 file.write("##delta---f0q-f00" + "\n")
 for j in range (n3):
     file.write(str(deltas[j]) + " " + str(f[j]) + " "  + "\n")
