@@ -22,7 +22,7 @@ class parameters:
         self.fmc_max  = 0.05
         self.fmc_min  = 0.0
         self.nfmc  = 1
-        self.nscf = 100
+        self.nscf = 1
 
 class irfunc:
     def __init__(self, Lambda, beta, eps=1e-7):
@@ -223,10 +223,10 @@ class fmc_anisotropic_eliashberg_BCS:
             #print("chi" ,n,  self.chi_temp[len(self.chi_temp)//2,0], linalg.norm(self.chi_temp-self.chi)/linalg.norm(self.chi))
             #print("delta" ,n,  self.delta_zeta_temp[len(self.delta_zeta_temp)//2,0], linalg.norm(self.delta_zeta_temp-self.delta_zeta)/linalg.norm(self.delta_zeta))
     def set_gkfs(self, g, b, p):
-        # self.gkf_m = 1.0 / ( b.iw_F[:,None] * self.zeta + (g.ek_m[None,:]))
-        # self.gkf_p = 1.0 / (-b.iw_F[:,None] * self.zeta + (g.ek_p[None,:]))
-        self.gkf_m = 1.0 / ( b.iw_F[:,None]  + (g.ek_m[None,:]))
-        self.gkf_p = 1.0 / (-b.iw_F[:,None]  + (g.ek_p[None,:]))
+        self.gkf_m = 1.0 / ( b.iw_F[:,None] * self.zeta + (g.ek_m[None,:]))
+        self.gkf_p = 1.0 / (-b.iw_F[:,None] * self.zeta + (g.ek_p[None,:]))
+        # self.gkf_m = 1.0 / ( b.iw_F[:,None]  + (g.ek_m[None,:]))
+        # self.gkf_p = 1.0 / (-b.iw_F[:,None]  + (g.ek_p[None,:]))
     def set_frt_zeta(self, g, b, p):
         #_ = (1/self.gkf_m) * (1/self.gkf_p) + self.delta_zeta*conj(self.delta_zeta)
         #_ = 1/(self.gkf_p*conj(self.gkf_m)) + self.delta_zeta*conj(self.delta_zeta)
