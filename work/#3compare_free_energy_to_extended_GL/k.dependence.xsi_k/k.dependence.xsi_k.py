@@ -33,7 +33,6 @@ def E_k_q_s(k1, k2, k3, gap, q, y, B):
     return E_k_q(k1, k2, k3, gap, q, B) + y * e_k_a(k1, k2, k3, q, B)
 
 def Fermi(beta, E):
-    #return  1 / (np.exp(beta*E) + 1 )
     return (1 - np.tanh(beta*E/2)) /2
 
 def func(k1, k2, k3, gap, q, B): 
@@ -66,18 +65,11 @@ def F0(qs,ans_q):
     f = e_k_spin(-1*kx, -1*ky, -1*kz, qs,-1, Bs[0]) - E_k_q_s(kx, ky, kz, ans_q, qs, -1, Bs[0])
     return sum(f)
 
-def F0_0(qs,ans_q):
+def xsi_k(qs):
     k1 = -1 * np.pi + 2 * arange(N) * np.pi / (N)
     kx = k1
     ky, kz = 1, 1
-    f = e_k_spin(-1*kx, -1*ky, -1*kz, qs,-1, Bs[0])
-    return sum(f)
-
-def F0_1(qs,ans_q):
-    k1 = -1 * np.pi + 2 * arange(N) * np.pi / (N)
-    kx = k1
-    ky, kz = 1, 1
-    f = E_k_q_s(kx, ky, kz, ans_q, qs, -1, Bs[0])
+    f = abs(e_k_spin(-1*kx, -1*ky, -1*kz, qs,-1, Bs[0]))
     return sum(f)
 
 def Fc(ans_q):
@@ -87,10 +79,15 @@ def free_energy(qs,ans_q):
     return (F1(qs,ans_q) + F0(qs,ans_q) + Fc(ans_q) -Fn()) / N#  
 
 ###################################################################################################################
-##calculate_freeenergy
+##calculate_k.dependence.ln(1+exp(Ekq))-ln(1+exp(Ek0))
 f, extended_GL = [], []
+y = -1 + 2 * arange(2)
+k1 = -1 * np.pi + 2 * arange(N) * np.pi / (N)
+kx, y = meshgrid(k1, y, indexing='ij')
+ky, kz = 1, 1
+
 for j in range(n3):
-    f_temp = (F0(qs[1],deltas[j]) - F0(qs[0],deltas[j]))/N
+    f_temp = (xsi_k(qs[0]) * qs[1]**2) / (8*N)
     f.append(f_temp)
 f = np.array(f)
 extended_GL = np.array(extended_GL)
@@ -99,13 +96,13 @@ extended_GL = np.array(extended_GL)
 #plot the figure of comparing free energy to extended GL
 for i in range(n0):
     plt.scatter(deltas, f[:], 5)
-    plt.savefig("figure/delta.dependence.f0q-f00.png")
+    plt.savefig("figure/k.dependence.xsi_k.png")
     plt.clf()
 
 ###################################
 ##output
-file = open("output/delta.dependence.f0q-f00", "w")
-file.write("##delta---f0q-f00" + "\n")
+file = open("output/k.dependence.xsi_k", "w")
+file.write("##delta---ln(1+exp(Ekq))-ln(1+exp(Ek0))" + "\n")
 for j in range (n3):
     file.write(str(deltas[j]) + " " + str(f[j]) + " "  + "\n")
 file.close()
