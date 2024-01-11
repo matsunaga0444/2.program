@@ -4,17 +4,17 @@ import matplotlib.pyplot as plt
 
 class parameters:
     def __init__(self):
-        self.nk1, self.nk2, self.nk3 = 10, 10, 1 
+        self.nk1, self.nk2, self.nk3 =100, 1, 1 
         self.beta_min   = 4
-        self.beta_max   = 1000
+        self.beta_max   = 10000
         self.nbeta  = 1
         self.mu     = 0.1
         self.g0ph   = 2.0
-        self.qf_phonon  =  1.0
+        self.qf_phonon  =  1
         self.damp_phonon   = 0.0
         self.damp_electron = 0.0
         self.mixing     = 0.0
-        self.lamb = 1e8
+        self.lamb = 100000
         self.nk = self.nk1 *self.nk2 * self.nk3
         self.dk1, self.dk2, self.dk3 = 1./self.nk1, 1./self.nk2, 1./self.nk3
         k1, k2, k3 = meshgrid(arange(self.nk1)*self.dk1, arange(self.nk2)*self.dk2, arange(self.nk3)*self.dk3)
@@ -22,7 +22,7 @@ class parameters:
         self.fmc_max  = 0.05
         self.fmc_min  = 0.0
         self.nfmc  = 1
-        self.n_scf = 1
+        self.nscf = 1
 
 class irfunc:
     def __init__(self, Lambda, beta, eps=1e-7):
@@ -63,24 +63,22 @@ class gfunctions:
         #self.debug(b, p)
         #self.debug_plt(b ,p)
     def set_ek_m(self, b, p, i):
-        self.ek_m  = -2*(cos(2*pi*(-1*p.k1+p.fmc_max*(i/p.nfmc)+p.fmc_min))+cos(2*pi*(-1*p.k2))) - p.mu
+        self.ek_m  = 2*(cos(2*pi*(-1*p.k1+p.fmc_max*(i/p.nfmc)+p.fmc_min))+cos(2*pi*(-1*p.k2))) - p.mu
         #self.gkf_m = 1.0 / (b.iw_F[:,None] - (self.ek_m[None,:]))
     def set_ek_p(self, b, p, i):
-        self.ek_p  = -2*(cos(2*pi*(p.k1+p.fmc_max*(i/p.nfmc)+p.fmc_min))+cos(2*pi*p.k2)) - p.mu
+        self.ek_p  = 2*(cos(2*pi*(p.k1+p.fmc_max*(i/p.nfmc)+p.fmc_min))+cos(2*pi*p.k2)) - p.mu
         #self.gkf_p = 1.0 / (b.iw_F[:,None] - (self.ek_p[None,:]))
     def set_dkf(self, b, p):
         damping  = -1j * p.damp_phonon * sign(imag(b.iw_B))
         dkf_m    = 1.0 / (b.iw_B - p.qf_phonon - damping)
         dkf_p    = 1.0 / (b.iw_B + p.qf_phonon - damping)
-        self.dkf = 0.5 * p.qf_phonon * (dkf_m - dkf_p)
-        self.dkf = self.dkf[:,None] * ones(p.nk)[None,:]
-    def set_dkf_c(self, b, p):
-        self.dkf = p.g0ph**2 * -0.5 * ones(len((b.iw_B)-1)) * 1e-1
+        self.dkf = 0.5 * p.qf_phonon * (dkf_p - dkf_m)
         self.dkf = self.dkf[:,None] * ones(p.nk)[None,:]
     def set_drt(self, b, p):
         # k,omega => k,irbasis => k,tau     => r,tau
         self.dkl = b.M_B.fit(self.dkf)
         self.d_kt = dot(b.ul_B_tau_B, self.dkl)
+        #print(shape(b.ul_B_tau_B), shape(b.ul_B_tau_F))
         self.d_kt = self.d_kt.reshape(b.ntau_B, p.nk1, p.nk2, p.nk3)
         self.drt = fft.fftn(self.d_kt, axes=(1,2,3)).reshape(b.ntau_B, p.nk)
     def debug(self, b, p):
@@ -174,7 +172,8 @@ class fmc_anisotropic_eliashberg_BCS:
     def set_initial(self, g, b, p):
         self.delta_0 = ones(b.niw_F)[:,None] * ones(p.nk)[None,:]        
         self.zeta_0  = ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
-        self.chi_0   = ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
+        self.chi_0   = 2 * ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
+        #self.chi_0   = ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
         self.delta_zeta_0 = ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
     def scf(self, g, b, p):
         self.delta  = self.delta_0
@@ -185,10 +184,12 @@ class fmc_anisotropic_eliashberg_BCS:
         self.delta_zeta   = zeros(b.niw_F)[:,None] * zeros(p.nk)[None,:]
         self.delta_zeta_temp = self.delta_zeta_0
         self.iter = 0
-        for n in range(p.n_scf):
-            if linalg.norm(self.zeta_temp-self.zeta)/linalg.norm(self.zeta) <= 1e-10 \
-               and linalg.norm(self.chi_temp-self.chi)/linalg.norm(self.chi) <= 1e-10 \
-               and linalg.norm(self.delta_zeta_temp-self.delta_zeta)/linalg.norm(self.delta_zeta) <= 1e-10: break
+        for n in range(p.nscf):
+            #if linalg.norm(self.delta_zeta_temp-self.delta_zeta)/linalg.norm(self.delta_zeta_temp)  <= 1e-10 : break
+            if abs(self.delta_zeta_temp[len(self.delta_zeta_temp)//2,0]) <= 1e-6: break
+            if linalg.norm(self.zeta_temp-self.zeta)/linalg.norm(self.zeta_temp) <= 1e-10 \
+               and linalg.norm(self.delta_zeta_temp-self.delta_zeta)/linalg.norm(self.delta_zeta_temp) <= 1e-10 \
+                and linalg.norm(self.chi_temp-self.chi)/linalg.norm(self.chi_temp) <= 1e-10 : break
             #if abs(self.delta_zeta_temp[len(self.delta_zeta_temp)//2,0]) <= 1e-15: break
             self.iter = self.iter + 1
             self.zeta = self.zeta_temp
@@ -196,58 +197,27 @@ class fmc_anisotropic_eliashberg_BCS:
             self.delta_zeta = self.delta_zeta_temp
             self.set_gkfs(g, b, p)
             self.set_frt_zeta(g, b, p)
-            self.y_rt_zeta = -(p.g0ph**2 * g.drt * self.frt_zeta).reshape(b.ntau_F,p.nk1,p.nk2,p.nk3) / p.nk
+            self.y_rt_zeta = (p.g0ph**2 * g.drt * self.frt_zeta).reshape(b.ntau_F,p.nk1,p.nk2,p.nk3) / p.nk
             self.y_kt_zeta = fft.ifftn(self.y_rt_zeta,axes=(1,2,3))
             self.y_kt_zeta = self.y_kt_zeta.reshape(b.ntau_F, p.nk)
             self.y_kl_zeta = b.T_F.fit(self.y_kt_zeta)
             self.y_kf_zeta = 1 + (((self.y_kl_zeta.T @ b.uhat_F).T) / (b.iw_F[:,None]*ones(p.nk)[None,:]))
             self.zeta_temp=  (1-p.mixing)*self.y_kf_zeta + p.mixing*self.zeta
-            self.set_frt_chi(g, b, p)
-            self.y_rt_chi = -(p.g0ph**2 * g.drt*self.frt_chi).reshape(b.ntau_F,p.nk1,p.nk2,p.nk3) / p.nk
-            self.y_kt_chi = fft.ifftn(self.y_rt_chi,axes=(1,2,3))
-            self.y_kt_chi = self.y_kt_chi.reshape(b.ntau_F, p.nk)
-            self.y_kl_chi = b.T_F.fit(self.y_kt_chi)
-            self.y_kf_chi = (self.y_kl_chi.T @ b.uhat_F).T
-            self.chi_temp=  (1-p.mixing)*self.y_kf_chi + p.mixing*self.chi
-            self.set_frt_delta_zeta(g, b, p)
-            self.y_rt_delta_zeta = -(p.g0ph**2 * g.drt*self.frt_delta_zeta).reshape(b.ntau_F,p.nk1,p.nk2,p.nk3) / p.nk
-            self.y_kt_delta_zeta = fft.ifftn(self.y_rt_delta_zeta,axes=(1,2,3))
-            self.y_kt_delta_zeta = self.y_kt_delta_zeta.reshape(b.ntau_F, p.nk)
-            self.y_kl_delta_zeta = b.T_F.fit(self.y_kt_delta_zeta)
-            self.y_kf_delta_zeta = (self.y_kl_delta_zeta.T @ b.uhat_F).T 
-            self.delta_zeta_temp=  (1-p.mixing)*self.y_kf_delta_zeta + p.mixing*self.delta_zeta
+            #self.zeta_temp= ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
             print("zeta" , n,  self.zeta_temp[len(self.zeta_temp)//2,0], linalg.norm(self.zeta_temp-self.zeta)/linalg.norm(self.zeta))
-            #print("chi" ,n,  self.chi_temp[len(self.chi_temp)//2,0], linalg.norm(self.chi_temp-self.chi)/linalg.norm(self.chi))
-            #print("delta" ,n,  self.delta_zeta_temp[len(self.delta_zeta_temp)//2,0], linalg.norm(self.delta_zeta_temp-self.delta_zeta)/linalg.norm(self.delta_zeta))
     def set_gkfs(self, g, b, p):
-        self.gkf_m = 1.0 / (b.iw_F[:,None] * self.zeta + (g.ek_m[None,:]))
-        self.gkf_p = 1.0 / (b.iw_F[:,None] * self.zeta - (g.ek_p[None,:]))
+        self.gkf_m = 1.0 / ( b.iw_F[:,None] + (g.ek_m[None,:]))
+        self.gkf_p = 1.0 / (-b.iw_F[:,None] + (g.ek_p[None,:]))
     def set_frt_zeta(self, g, b, p):
-        _ = 1/(self.gkf_p*conj(self.gkf_m)) + self.delta_zeta*conj(self.delta_zeta)
-        #_ = (1/self.gkf_m + self.chi) * (1/self.gkf_p + self.chi) - self.delta_zeta*conj(self.delta_zeta)
-        self.fkf_zeta = (1j*((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@self.zeta)+(g.ek_m-g.ek_p)/2)/_
+        _ = (1/self.gkf_m) * (1/self.gkf_p)
+        self.fkf_zeta = ((b.iw_F[:,None]))/_
         self.fkl_zeta = b.M_F.fit(self.fkf_zeta)
-        self.fkt_zeta = dot(b.ul_F_tau_F, self.fkl_zeta)
-        self.fkt_zeta = self.fkt_zeta.reshape(b.ntau_F, p.nk1, p.nk2, p.nk3)
-        self.frt_zeta = fft.fftn(self.fkt_zeta, axes=(1,2,3)).reshape(b.ntau_F, p.nk)
-    def set_frt_chi(self, g, b, p):
-        _ = 1/(self.gkf_p*conj(self.gkf_m)) + self.delta_zeta*conj(self.delta_zeta)
-        #_ = (1/self.gkf_m + self.chi) * (1/self.gkf_p + self.chi) - self.delta_zeta*conj(self.delta_zeta)
-        self.fkf_chi = (self.chi+(g.ek_m+g.ek_p)/2)/_
-        self.fkl_chi = b.M_F.fit(self.fkf_chi)
-        self.fkt_chi = dot(b.ul_F_tau_B, self.fkl_chi)
-        self.fkt_chi = self.fkt_chi.reshape(b.ntau_B, p.nk1, p.nk2, p.nk3)
-        self.frt_chi = fft.fftn(self.fkt_chi, axes=(1,2,3)).reshape(b.ntau_B, p.nk)
-    def set_frt_delta_zeta(self, g, b, p):
-        #_ = 1/(self.gkf_p*conj(self.gkf_m)) + self.delta_zeta*conj(self.delta_zeta)
-        _ = (1/self.gkf_m + self.chi) * (1/self.gkf_p + self.chi) - self.delta_zeta*conj(self.delta_zeta)
-        self.fkf_delta_zeta = self.delta_zeta /_
-        self.fkl_delta_zeta = b.M_F.fit(self.fkf_delta_zeta)
-        self.fkt_delta_zeta = dot(b.ul_F_tau_B, self.fkl_delta_zeta)
-        self.fkt_delta_zeta = self.fkt_delta_zeta.reshape(b.ntau_B, p.nk1, p.nk2, p.nk3)
-        self.frt_delta_zeta = fft.fftn(self.fkt_delta_zeta, axes=(1,2,3)).reshape(b.ntau_B, p.nk)
+        self.fkt_zeta = dot(b.ul_F_tau_B, self.fkl_zeta)
+        self.fkt_zeta = self.fkt_zeta.reshape(b.ntau_B, p.nk1, p.nk2, p.nk3)
+        self.frt_zeta = fft.fftn(self.fkt_zeta, axes=(1,2,3)).reshape(b.ntau_B, p.nk)
     def cal_delta(self, g, b, p):
-        self.delta = self.delta_zeta / self.zeta
+        self.delta = self.delta_zeta / (ones(b.niw_F)[:,None] * ones(p.nk)[None,:])
+        #self.delta = self.delta_zeta / self.zeta
     def debug(self, g, b, p): #self.delta0, self.delta, self.fkf, self.fkl, fkt, self.frt, y_rt, y_kt, y_kl, y_kf
         file = open("output/gkf_m.dat","w")
         for k in range(len(g.ek_m)):
@@ -436,130 +406,142 @@ class fmc_anisotropic_eliashberg_BCS:
             file.write("\n")
         file.close()  
     def debug_plot(self, g, b, p):
+    #     for j in range(p.nk):
+    #         plt.scatter(abs(b.iw_F), abs(self.delta_zeta_0[:,j]), s=1)
+    #     plt.savefig("figure/abs(b.iw_F)_abs(self.delta0).png")
+    #     plt.clf()
         for j in range(p.nk):
-            plt.scatter(abs(b.iw_F), abs(self.delta_zeta_0[:,j]), s=1)
-        plt.savefig("figure/abs(b.iw_F)_abs(self.delta0).png")
+            plt.scatter(abs(b.iw_F), (self.zeta[:,j].real), s=1)
+        plt.savefig("figure/abs(b.iw_F)_Re(self.zeta).png")
         plt.clf()
         for j in range(p.nk):
-            plt.scatter(abs(b.iw_F), abs(self.zeta[:,j]), s=1)
-        plt.savefig("figure/abs(b.iw_F)_abs(self.zeta).png")
+            plt.scatter(abs(b.iw_F), (self.zeta[:,j].imag), s=1)
+        plt.savefig("figure/abs(b.iw_F)_Im(self.zeta).png")
         plt.clf()
         for j in range(p.nk):
-            plt.scatter(abs(b.iw_F), abs(self.chi[:,j]), s=1)
-        plt.savefig("figure/abs(b.iw_F)_abs(self.chi).png")
+            plt.scatter(abs(b.iw_F), (self.chi[:,j].real), s=1)
+        plt.savefig("figure/abs(b.iw_F)_Re(self.chi).png")
         plt.clf()
         for j in range(p.nk):
-            plt.scatter(abs(b.iw_F), abs(self.delta[:,j]), s=1)
-        plt.savefig("figure/abs(b.iw_F)_abs(self.delta).png")
+            plt.scatter(abs(b.iw_F), (self.chi[:,j].imag), s=1)
+        plt.savefig("figure/abs(b.iw_F)_Im(self.chi).png")
+        plt.clf()
+    #     for j in range(p.nk):
+    #         plt.scatter(abs(b.iw_F), abs(self.delta[:,j]), s=1)
+    #     plt.savefig("figure/abs(b.iw_F)_abs(self.delta).png")
+    #     plt.clf()
+        for j in range(p.nk):
+            plt.scatter(abs(b.iw_F), (self.delta_zeta[:,j].real), s=1)
+        plt.savefig("figure/abs(b.iw_F)_Re(self.delta_zeta).png")
         plt.clf()
         for j in range(p.nk):
-            plt.scatter(abs(b.iw_F), abs(self.delta_zeta[:,j]), s=1)
-        plt.savefig("figure/abs(b.iw_F)_abs(self.delta_zeta).png")
+            plt.scatter(abs(b.iw_F), (self.delta_zeta[:,j].imag), s=1)
+        plt.savefig("figure/abs(b.iw_F)_Im(self.delta_zeta).png")
         plt.clf()
         for j in range(p.nk):
             plt.scatter(abs(b.iw_F), abs(self.fkf_zeta[:,j]), s=1)
         plt.savefig("figure/abs(b.iw_F)_abs(self.fkf_zeta).png")
         plt.clf()
         for j in range(p.nk):
-            plt.scatter(arange(b.nbasis_F), abs(self.fkl_zeta[:,j]), s=1)
+            plt.scatter(arange(b.nbasis_F), log(abs(self.fkl_zeta[:,j])), s=1)
         plt.savefig("figure/num(b.basis_F)_abs(self.fkl_zeta).png")
         plt.clf()
-        print(shape(b.tau_F),shape(self.fkt_zeta))
-        self.fkt_zeta = self.fkt_zeta.reshape(b.ntau_F,p.nk)
-        print(shape(b.tau_F),shape(self.fkt_zeta))
+    #     print(shape(b.tau_F),shape(self.fkt_zeta))
+    #     self.fkt_zeta = self.fkt_zeta.reshape(b.ntau_F,p.nk)
+    #     print(shape(b.tau_F),shape(self.fkt_zeta))
+    #     for j in range(p.nk):
+    #         plt.scatter(b.tau_F[:], abs(self.fkt_zeta[:,j]), s=1)
+    #     plt.savefig("figure/(b.tau_F)_abs(self.fkt_zeta).png")
+    #     plt.clf()     
+    #     for j in range(p.nk):
+    #         plt.scatter(b.tau_F[:], abs(self.frt_zeta[:,j]), s=1)
+    #     plt.savefig("figure/(b.tau_F)_abs(self.frt_zeta).png")
+    #     plt.clf()     
+    #     self.y_rt_zeta = self.y_rt_zeta.reshape(b.ntau_F,p.nk)
+    #     for j in range(p.nk):
+    #         plt.scatter(b.tau_F[:], abs(self.y_rt_zeta[:,j]), s=1)
+    #     plt.savefig("figure/(b.tau_F)_abs(self.y_rt_zeta).png")
+    #     plt.clf()   
+    #     for j in range(p.nk):
+    #         plt.scatter(b.tau_F[:], abs(self.y_kt_zeta[:,j]), s=1)
+    #     plt.savefig("figure/(b.tau_F)_abs(self.y_kt_zeta).png")
+    #     plt.clf()   
+    #     for j in range(p.nk):
+    #         plt.scatter(arange(b.nbasis_F), abs(self.y_kl_zeta[:,j]), s=1)
+    #     plt.savefig("figure/num(b.basis_F)_abs(self.y_kl_zeta).png")
+    #     plt.clf()  
+    #     for j in range(p.nk):
+    #         plt.scatter(abs(b.iw_F[:]), abs(self.y_kf_zeta[:,j]), s=1)
+    #     plt.savefig("figure/num(b.iw_F)_abs(self.y_kf_zeta).png")
+    #     plt.clf()  
+    #     for j in range(p.nk):
+    #         plt.scatter(abs(b.iw_F), abs(self.fkf_chi[:,j]), s=1)
+    #     plt.savefig("figure/abs(b.iw_F)_abs(self.fkf_chi).png")
+    #     plt.clf()
         for j in range(p.nk):
-            plt.scatter(b.tau_F[:], abs(self.fkt_zeta[:,j]), s=1)
-        plt.savefig("figure/(b.tau_F)_abs(self.fkt_zeta).png")
-        plt.clf()     
-        for j in range(p.nk):
-            plt.scatter(b.tau_F[:], abs(self.frt_zeta[:,j]), s=1)
-        plt.savefig("figure/(b.tau_F)_abs(self.frt_zeta).png")
-        plt.clf()     
-        self.y_rt_zeta = self.y_rt_zeta.reshape(b.ntau_F,p.nk)
-        for j in range(p.nk):
-            plt.scatter(b.tau_F[:], abs(self.y_rt_zeta[:,j]), s=1)
-        plt.savefig("figure/(b.tau_F)_abs(self.y_rt_zeta).png")
-        plt.clf()   
-        for j in range(p.nk):
-            plt.scatter(b.tau_F[:], abs(self.y_kt_zeta[:,j]), s=1)
-        plt.savefig("figure/(b.tau_F)_abs(self.y_kt_zeta).png")
-        plt.clf()   
-        for j in range(p.nk):
-            plt.scatter(arange(b.nbasis_F), abs(self.y_kl_zeta[:,j]), s=1)
-        plt.savefig("figure/num(b.basis_F)_abs(self.y_kl_zeta).png")
-        plt.clf()  
-        for j in range(p.nk):
-            plt.scatter(abs(b.iw_F[:]), abs(self.y_kf_zeta[:,j]), s=1)
-        plt.savefig("figure/num(b.iw_F)_abs(self.y_kf_zeta).png")
-        plt.clf()  
-        for j in range(p.nk):
-            plt.scatter(abs(b.iw_F), abs(self.fkf_chi[:,j]), s=1)
-        plt.savefig("figure/abs(b.iw_F)_abs(self.fkf_chi).png")
-        plt.clf()
-        for j in range(p.nk):
-            plt.scatter(arange(b.nbasis_F), abs(self.fkl_chi[:,j]), s=1)
+            plt.scatter(arange(b.nbasis_F), log(abs(self.fkl_chi[:,j])), s=1)
         plt.savefig("figure/num(b.basis_F)_abs(self.fkl_chi).png")
         plt.clf()
-        self.fkt_chi = self.fkt_chi.reshape(b.ntau_F,p.nk)
+    #     self.fkt_chi = self.fkt_chi.reshape(b.ntau_F,p.nk)
+    #     for j in range(p.nk):
+    #         plt.scatter(b.tau_F[:], abs(self.fkt_chi[:,j]), s=1)
+    #     plt.savefig("figure/(b.tau_F)_abs(self.fkt_chi).png")
+    #     plt.clf()     
+    #     for j in range(p.nk):
+    #         plt.scatter(b.tau_F[:], abs(self.frt_chi[:,j]), s=1)
+    #     plt.savefig("figure/(b.tau_F)_abs(self.frt_chi).png")
+    #     plt.clf()   
+    #     self.y_rt_chi = self.y_rt_chi.reshape(b.ntau_F,p.nk)  
+    #     for j in range(p.nk):
+    #         plt.scatter(b.tau_F[:], abs(self.y_rt_chi[:,j]), s=1)
+    #     plt.savefig("figure/(b.tau_F)_abs(self.y_rt_chi).png")
+    #     plt.clf()   
+    #     for j in range(p.nk):
+    #         plt.scatter(b.tau_F[:], abs(self.y_kt_chi[:,j]), s=1)
+    #     plt.savefig("figure/(b.tau_F)_abs(self.y_kt_chi).png")
+    #     plt.clf()   
+    #     for j in range(p.nk):
+    #         plt.scatter(arange(b.nbasis_F), abs(self.y_kl_chi[:,j]), s=1)
+    #     plt.savefig("figure/num(b.basis_F)_abs(self.y_kl_chi).png")
+    #     plt.clf()  
+    #     for j in range(p.nk):
+    #         plt.scatter(abs(b.iw_F[:]), abs(self.y_kf_chi[:,j]), s=1)
+    #     plt.savefig("figure/num(b.iw_F)_abs(self.y_kf_chi).png")
+    #     plt.clf() 
+    #     for j in range(p.nk):
+    #         plt.scatter(abs(b.iw_F), abs(self.fkf_delta_zeta[:,j]), s=1)
+    #     plt.savefig("figure/abs(b.iw_F)_abs(self.fkf_delta_zeta).png")
+    #     plt.clf()
         for j in range(p.nk):
-            plt.scatter(b.tau_F[:], abs(self.fkt_chi[:,j]), s=1)
-        plt.savefig("figure/(b.tau_F)_abs(self.fkt_chi).png")
-        plt.clf()     
-        for j in range(p.nk):
-            plt.scatter(b.tau_F[:], abs(self.frt_chi[:,j]), s=1)
-        plt.savefig("figure/(b.tau_F)_abs(self.frt_chi).png")
-        plt.clf()   
-        self.y_rt_chi = self.y_rt_chi.reshape(b.ntau_F,p.nk)  
-        for j in range(p.nk):
-            plt.scatter(b.tau_F[:], abs(self.y_rt_chi[:,j]), s=1)
-        plt.savefig("figure/(b.tau_F)_abs(self.y_rt_chi).png")
-        plt.clf()   
-        for j in range(p.nk):
-            plt.scatter(b.tau_F[:], abs(self.y_kt_chi[:,j]), s=1)
-        plt.savefig("figure/(b.tau_F)_abs(self.y_kt_chi).png")
-        plt.clf()   
-        for j in range(p.nk):
-            plt.scatter(arange(b.nbasis_F), abs(self.y_kl_chi[:,j]), s=1)
-        plt.savefig("figure/num(b.basis_F)_abs(self.y_kl_chi).png")
-        plt.clf()  
-        for j in range(p.nk):
-            plt.scatter(abs(b.iw_F[:]), abs(self.y_kf_chi[:,j]), s=1)
-        plt.savefig("figure/num(b.iw_F)_abs(self.y_kf_chi).png")
-        plt.clf() 
-        for j in range(p.nk):
-            plt.scatter(abs(b.iw_F), abs(self.fkf_delta_zeta[:,j]), s=1)
-        plt.savefig("figure/abs(b.iw_F)_abs(self.fkf_delta_zeta).png")
+            plt.scatter(arange(b.nbasis_F), log(abs(self.fkl_delta_zeta[:,j])), s=1)
+        plt.savefig("figure/num(b.basis_F)_log(abs(self.fkl_delta_zeta)).png")
         plt.clf()
-        for j in range(p.nk):
-            plt.scatter(arange(b.nbasis_F), abs(self.fkl_delta_zeta[:,j]), s=1)
-        plt.savefig("figure/num(b.basis_F)_abs(self.fkl_delta_zeta).png")
-        plt.clf()
-        self.fkt_delta_zeta = self.fkt_delta_zeta.reshape(b.ntau_F,p.nk)  
-        for j in range(p.nk):
-            plt.scatter(b.tau_F[:], abs(self.fkt_delta_zeta[:,j]), s=1)
-        plt.savefig("figure/(b.tau_F)_abs(self.fkt_delta_zeta).png")
-        plt.clf()     
-        for j in range(p.nk):
-            plt.scatter(b.tau_F[:], abs(self.frt_delta_zeta[:,j]), s=1)
-        plt.savefig("figure/(b.tau_F)_abs(self.frt_delta_zeta).png")
-        plt.clf()     
-        self.y_rt_delta_zeta = self.y_rt_delta_zeta.reshape(b.ntau_F,p.nk) 
-        for j in range(p.nk):
-            plt.scatter(b.tau_F[:], abs(self.y_rt_delta_zeta[:,j]), s=1)
-        plt.savefig("figure/(b.tau_F)_abs(self.y_rt_delta_zeta).png")
-        plt.clf()   
-        for j in range(p.nk):
-            plt.scatter(b.tau_F[:], abs(self.y_kt_delta_zeta[:,j]), s=1)
-        plt.savefig("figure/(b.tau_F)_abs(self.y_kt_delta_zeta).png")
-        plt.clf()   
-        for j in range(p.nk):
-            plt.scatter(arange(b.nbasis_F), abs(self.y_kl_delta_zeta[:,j]), s=1)
-        plt.savefig("figure/num(b.basis_F)_abs(self.y_kl_delta_zeta).png")
-        plt.clf()  
-        for j in range(p.nk):
-            plt.scatter(abs(b.iw_F[:]), abs(self.y_kf_delta_zeta[:,j]), s=1)
-        plt.savefig("figure/num(b.iw_F)_abs(self.y_kf_delta_zeta).png")
-        plt.clf() 
+    #     self.fkt_delta_zeta = self.fkt_delta_zeta.reshape(b.ntau_F,p.nk)  
+    #     for j in range(p.nk):
+    #         plt.scatter(b.tau_F[:], abs(self.fkt_delta_zeta[:,j]), s=1)
+    #     plt.savefig("figure/(b.tau_F)_abs(self.fkt_delta_zeta).png")
+    #     plt.clf()     
+    #     for j in range(p.nk):
+    #         plt.scatter(b.tau_F[:], abs(self.frt_delta_zeta[:,j]), s=1)
+    #     plt.savefig("figure/(b.tau_F)_abs(self.frt_delta_zeta).png")
+    #     plt.clf()     
+    #     self.y_rt_delta_zeta = self.y_rt_delta_zeta.reshape(b.ntau_F,p.nk) 
+    #     for j in range(p.nk):
+    #         plt.scatter(b.tau_F[:], abs(self.y_rt_delta_zeta[:,j]), s=1)
+    #     plt.savefig("figure/(b.tau_F)_abs(self.y_rt_delta_zeta).png")
+    #     plt.clf()   
+    #     for j in range(p.nk):
+    #         plt.scatter(b.tau_F[:], abs(self.y_kt_delta_zeta[:,j]), s=1)
+    #     plt.savefig("figure/(b.tau_F)_abs(self.y_kt_delta_zeta).png")
+    #     plt.clf()   
+    #     for j in range(p.nk):
+    #         plt.scatter(arange(b.nbasis_F), abs(self.y_kl_delta_zeta[:,j]), s=1)
+    #     plt.savefig("figure/num(b.basis_F)_abs(self.y_kl_delta_zeta).png")
+    #     plt.clf()  
+    #     for j in range(p.nk):
+    #         plt.scatter(abs(b.iw_F[:]), abs(self.y_kf_delta_zeta[:,j]), s=1)
+    #     plt.savefig("figure/num(b.iw_F)_abs(self.y_kf_delta_zeta).png")
+    #     plt.clf() 
     def output(self, g, b, p):
         file = open("output/delta.dat","w")
         for i in range(p.nk):
@@ -630,3 +612,5 @@ if __name__=='__main__':
             file.write("\n")
             file.close()
     f = output(g, b, p)
+
+

@@ -22,7 +22,7 @@ class parameters:
         self.fmc_max  = 0.05
         self.fmc_min  = 0.0
         self.nfmc  = 1
-        self.nscf = 10
+        self.nscf = 1
 
 class irfunc:
     def __init__(self, Lambda, beta, eps=1e-7):
@@ -172,9 +172,9 @@ class fmc_anisotropic_eliashberg_BCS:
     def set_initial(self, g, b, p):
         self.delta_0 = ones(b.niw_F)[:,None] * ones(p.nk)[None,:]        
         self.zeta_0  = ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
-        self.chi_0   = 2 * ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
+        self.chi_0   = 0 * ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
         #self.chi_0   = ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
-        self.delta_zeta_0 = ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
+        self.delta_zeta_0 = 0 * ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
     def scf(self, g, b, p):
         self.delta  = self.delta_0
         self.zeta   = zeros(b.niw_F)[:,None] * zeros(p.nk)[None,:]
@@ -186,10 +186,10 @@ class fmc_anisotropic_eliashberg_BCS:
         self.iter = 0
         for n in range(p.nscf):
             #if linalg.norm(self.delta_zeta_temp-self.delta_zeta)/linalg.norm(self.delta_zeta_temp)  <= 1e-10 : break
-            if abs(self.delta_zeta_temp[len(self.delta_zeta_temp)//2,0]) <= 1e-6: break
-            if linalg.norm(self.zeta_temp-self.zeta)/linalg.norm(self.zeta_temp) <= 1e-10 \
-               and linalg.norm(self.delta_zeta_temp-self.delta_zeta)/linalg.norm(self.delta_zeta_temp) <= 1e-10 \
-                and linalg.norm(self.chi_temp-self.chi)/linalg.norm(self.chi_temp) <= 1e-10 : break
+            # if abs(self.delta_zeta_temp[len(self.delta_zeta_temp)//2,0]) <= 1e-6: break
+            # if linalg.norm(self.zeta_temp-self.zeta)/linalg.norm(self.zeta_temp) <= 1e-10 \
+            #    and linalg.norm(self.delta_zeta_temp-self.delta_zeta)/linalg.norm(self.delta_zeta_temp) <= 1e-10 \
+            #     and linalg.norm(self.chi_temp-self.chi)/linalg.norm(self.chi_temp) <= 1e-10 : break
             #if abs(self.delta_zeta_temp[len(self.delta_zeta_temp)//2,0]) <= 1e-15: break
             self.iter = self.iter + 1
             self.zeta = self.zeta_temp
@@ -201,7 +201,7 @@ class fmc_anisotropic_eliashberg_BCS:
             self.y_kt_zeta = fft.ifftn(self.y_rt_zeta,axes=(1,2,3))
             self.y_kt_zeta = self.y_kt_zeta.reshape(b.ntau_F, p.nk)
             self.y_kl_zeta = b.T_F.fit(self.y_kt_zeta)
-            self.y_kf_zeta = 1 + (((self.y_kl_zeta.T @ b.uhat_F).T) / (-1j * b.iw_F[:,None]*ones(p.nk)[None,:]))
+            self.y_kf_zeta = 1 + (((self.y_kl_zeta.T @ b.uhat_F).T) / (b.iw_F[:,None]*ones(p.nk)[None,:]))
             self.zeta_temp=  (1-p.mixing)*self.y_kf_zeta + p.mixing*self.zeta
             #self.zeta_temp= ones(b.niw_F)[:,None] * ones(p.nk)[None,:]
             self.set_frt_chi(g, b, p)
@@ -233,7 +233,7 @@ class fmc_anisotropic_eliashberg_BCS:
         _ = (1/self.gkf_m + self.chi) * (1/self.gkf_p + self.chi) + self.delta_zeta*conj(self.delta_zeta)
         #self.fkf_zeta = (((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ ones(b.niw_F)[:,None] * ones(p.nk)[None,:])+(g.ek_p-g.ek_m)/2)/_
         #self.fkf_zeta = (((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ (ones(b.niw_F)[:,None] * ones(p.nk)[None,:]))+(g.ek_p-g.ek_m)/2)/_
-        self.fkf_zeta = (((-1j * b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ self.zeta[:,:] ) + (g.ek_m-g.ek_p)/2)/_
+        self.fkf_zeta = (((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ self.zeta[:,:] ) + (g.ek_m-g.ek_p)/2)/_
         #print(-1j * b.iw_F[:,None]*ones(b.niw_F)[None,:])
         #print(abs(self.zeta - ones(b.niw_F)[:,None] * ones(p.nk)[None,:]))
         #self.fkf_zeta = (1j*((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@self.zeta)+(g.ek_p-g.ek_m)/2)/_
