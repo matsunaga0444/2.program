@@ -218,22 +218,25 @@ class fmc_anisotropic_eliashberg_BCS:
             self.y_kt_delta_zeta = self.y_kt_delta_zeta.reshape(b.ntau_B, p.nk)
             self.y_kl_delta_zeta = b.T_F.fit(self.y_kt_delta_zeta)
             self.y_kf_delta_zeta = (self.y_kl_delta_zeta.T @ b.uhat_F).T 
-            self.delta_zeta_temp=  (1-p.mixing)*self.y_kf_delta_zeta + p.mixing*self.delta_zeta
+            self.delta_zeta_temp =  (1-p.mixing)*self.y_kf_delta_zeta + p.mixing*self.delta_zeta
             print("zeta" , n,  self.zeta_temp[len(self.zeta_temp)//2,0], linalg.norm(self.zeta_temp-self.zeta)/linalg.norm(self.zeta))
             #print("chi" ,n,  self.chi_temp[len(self.chi_temp)//2,0], linalg.norm(self.chi_temp-self.chi)/linalg.norm(self.chi))
             #print("delta" ,n,  self.delta_zeta_temp[len(self.delta_zeta_temp)//2,0], linalg.norm(self.delta_zeta_temp-self.delta_zeta)/linalg.norm(self.delta_zeta))
     def set_gkfs(self, g, b, p):
-        self.gkf_m = 1.0 / ( b.iw_F[:,None] * self.zeta + (g.ek_m[None,:]))
-        self.gkf_p = 1.0 / (-b.iw_F[:,None] * self.zeta + (g.ek_p[None,:]))
-        # self.gkf_m = 1.0 / ( b.iw_F[:,None]  + (g.ek_m[None,:]))
-        # self.gkf_p = 1.0 / (-b.iw_F[:,None]  + (g.ek_p[None,:]))
+        # self.gkf_m = 1.0 / ( b.iw_F[:,None] * self.zeta + (g.ek_m[None,:]))
+        # self.gkf_p = 1.0 / (-b.iw_F[:,None] * self.zeta + (g.ek_p[None,:]))
+        self.gkf_m = 1.0 / ( b.iw_F[:,None]  + (g.ek_m[None,:]))
+        self.gkf_p = 1.0 / (-b.iw_F[:,None]  + (g.ek_p[None,:]))
     def set_frt_zeta(self, g, b, p):
         #_ = (1/self.gkf_m) * (1/self.gkf_p) + self.delta_zeta*conj(self.delta_zeta)
         #_ = 1/(self.gkf_p*conj(self.gkf_m)) + self.delta_zeta*conj(self.delta_zeta)
-        _ = (1/self.gkf_m + self.chi) * (1/self.gkf_p + self.chi) + self.delta_zeta*conj(self.delta_zeta)
+        _ = (1/self.gkf_m) * (1/self.gkf_p)
+        #_ = (1/self.gkf_m + self.chi) * (1/self.gkf_p + self.chi) 
+        #_ = (1/self.gkf_m + self.chi) * (1/self.gkf_p + self.chi) + self.delta_zeta*conj(self.delta_zeta)
         #self.fkf_zeta = (((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ ones(b.niw_F)[:,None] * ones(p.nk)[None,:])+(g.ek_p-g.ek_m)/2)/_
         #self.fkf_zeta = (((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ (ones(b.niw_F)[:,None] * ones(p.nk)[None,:]))+(g.ek_p-g.ek_m)/2)/_
-        self.fkf_zeta = (((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ self.zeta[:,:] ) + (g.ek_m-g.ek_p)/2)/_
+        #self.fkf_zeta = (((b.iw_F[:,None])) + (g.ek_m-g.ek_p)/2)/_
+        self.fkf_zeta = (((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ self.zeta[:,:]) + (g.ek_m-g.ek_p)/2)/_
         #print(-1j * b.iw_F[:,None]*ones(b.niw_F)[None,:])
         #print(abs(self.zeta - ones(b.niw_F)[:,None] * ones(p.nk)[None,:]))
         #self.fkf_zeta = (1j*((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@self.zeta)+(g.ek_p-g.ek_m)/2)/_
