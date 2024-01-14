@@ -234,9 +234,13 @@ class fmc_anisotropic_eliashberg_BCS:
         #_ = (1/self.gkf_m + self.chi) * (1/self.gkf_p + self.chi) 
         #_ = (1/self.gkf_m + self.chi) * (1/self.gkf_p + self.chi) + self.delta_zeta*conj(self.delta_zeta)
         #self.fkf_zeta = (((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ ones(b.niw_F)[:,None] * ones(p.nk)[None,:])+(g.ek_p-g.ek_m)/2)/_
+        #self.fkf_zeta = ((b.iw_F[:,None]*(ones(b.niw_F)[:,None] * ones(p.nk)[None,:]))+(g.ek_p-g.ek_m)/2)/_
+        self.fkf_zeta = ((b.iw_F[:,None]*self.zeta)+(g.ek_p-g.ek_m)/2)/_
         #self.fkf_zeta = (((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ (ones(b.niw_F)[:,None] * ones(p.nk)[None,:]))+(g.ek_p-g.ek_m)/2)/_
         #self.fkf_zeta = (((b.iw_F[:,None])) + (g.ek_m-g.ek_p)/2)/_
-        self.fkf_zeta = (((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ self.zeta[:,:]) + (g.ek_m-g.ek_p)/2)/_
+        #self.fkf_zeta = (((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@ self.zeta[:,:]) + (g.ek_m-g.ek_p)/2)/_
+        #self.fkf_zeta = (((b.iw_F[:,None]*ones(b.niw_F)[None,:])@self.zeta[:,:].T) + (g.ek_m-g.ek_p)/2)/_
+        #self.fkf_zeta = ((self.zeta[:,:].T@(b.iw_F[:,None]*ones(b.niw_F)[None,:])) + (g.ek_m-g.ek_p)/2)/_
         #print(-1j * b.iw_F[:,None]*ones(b.niw_F)[None,:])
         #print(abs(self.zeta - ones(b.niw_F)[:,None] * ones(p.nk)[None,:]))
         #self.fkf_zeta = (1j*((b.iw_F[:,None]*ones(b.niw_F)[None,:]).T@self.zeta)+(g.ek_p-g.ek_m)/2)/_
