@@ -1,0 +1,37 @@
+
+
+*******************************************************************************
+Mon Jan 15 07:40:07 2024
+
+
+FIT:    data read from "cfenergy" u 1:2
+        format = x:z
+        x range restricted to [0.00000 : 0.100000]
+        #datapoints = 10
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a + b * x**2
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b            
+   0 1.0139713936e+01   0.00e+00  7.07e-01    1.000000e+00   1.000000e+00
+   6 1.1541789270e-10  -3.40e-04  7.07e-07   -8.506377e-03   1.506884e+00
+
+After 6 iterations the fit converged.
+final sum of squares of residuals : 1.15418e-10
+rel. change during last iteration : -3.40031e-09
+
+degrees of freedom    (FIT_NDF)                        : 8
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 3.79832e-06
+variance of residuals (reduced chisquare) = WSSR/ndf   : 1.44272e-11
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = -0.00850638      +/- 1.752e-06    (0.02059%)
+b               = 1.50688          +/- 0.000418     (0.02774%)
+
+correlation matrix of the fit parameters:
+                a      b      
+a               1.000 
+b              -0.728  1.000 

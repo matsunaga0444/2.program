@@ -8,9 +8,9 @@ from time import time
 ###################################################################################################################
 ##パラメータの調整
 N = 10000
-V, t, mu, gu, n0, n1, n2, nscf =1.5, 1 , 0, 1, 30, 1, 1, 2000  # 7.525 #9.21
+V, t, mu, gu, n0, n1, n2, nscf =1, 1 , 0, 1, 30, 1, 1, 2000  # 7.525 #9.21
 error, check_gap =1e-10, 1e-6
-qs     = np.linspace(0.0,0.1,n0)         #(np.pi/a)
+qs     = np.linspace(0.0,0.01,n0)         #(np.pi/a)
 Bs     = np.linspace(0.0,0.0,n1)          #np.linspace(0,0.08,n1)
 kBTs   = np.linspace(0.001,1,n2)
 
@@ -104,6 +104,12 @@ ans = np.array(ans_F)
 #free energy の描画
 plt.scatter(qs, ans, color=(h/n0,i/n1,1-i/n1,1-(h/n0)/2))
 plt.show()
+
+########################################################################################################################
+#plot the figure of comparing free energy to extended GL
+plt.scatter(qs, ans, 5)
+plt.savefig("figure/cfenergy.png")
+plt.clf()
 
 ################################################################################################################################################
 ##output
