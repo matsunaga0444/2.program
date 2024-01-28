@@ -1,0 +1,110 @@
+import numpy as np
+from numpy import *
+import matplotlib.pyplot as plt
+
+###################################################################################################################
+##パラメータの調整
+N = 10000
+V, t, mu, gu, n0, n1, n2, n3, nscf =1.5, 1 , 0, 1, 100, 1, 1, 1, 2000  # 7.525 #9.21
+n_search, error, check_gap =100, 1e-10, 1e-6
+qs     = np.linspace(0.00, 0.1, n0)         #(np.pi/a)
+Bs     = np.linspace(0.0, 0.0, n1)            #np.linspace(0,0.08,n1)
+kBTs   = np.linspace(0.001, 1, n2)            
+deltas = np.linspace(0.12096405360425501, 0.3, n3)         
+beta = 1/kBTs[0]    
+
+###################################################################################################################
+## gap_eq をdef
+def e_k_spin(k1, k2, k3, q, y, B): 
+    return 2*t*(np.cos((k1+(q/2)*np.pi))) - mu + y * 1/2 * gu * B
+
+def e_k_s(k1, k2, k3, q, B):
+    return (e_k_spin(k1, k2, k3, q, 1, B) + e_k_spin(-1*k1, -1*k2, -1*k3, q, -1, B))/2
+
+def e_k_a(k1, k2, k3, q, B):
+    return (e_k_spin(k1, k2, k3, q, 1, B) - e_k_spin(-1*k1, -1*k2, -1*k3, q, -1, B))/2
+
+def E_k_q(k1, k2, k3, gap, q, B):
+    return np.sqrt(e_k_s(k1, k2, k3, q, B)**2 + gap**2)
+
+def E_k_q_s(k1, k2, k3, gap, q, y, B):
+    return E_k_q(k1, k2, k3, gap, q, B) + y * e_k_a(k1, k2, k3, q, B)
+
+def Fermi(beta, E):
+    return (1 - np.tanh(beta*E/2)) /2
+
+def func(k1, k2, k3, gap, q, B): 
+    return gap*(1-Fermi(beta, E_k_q_s(k1, k2, k3, gap, q, -1, B))-Fermi(beta, E_k_q_s(k1, k2, k3, gap, q, 1, B)))/(2*E_k_q(k1, k2, k3, gap, q, B))
+
+def rhs(gap, q, B):
+    k1 = -1 * np.pi + 2 * arange(N) * np.pi / (N)
+    kx = k1
+    ky, kz = 1, 1
+    f = func(kx, ky, kz, gap, q, B)
+    return (V / (N)) * sum(f)
+
+###################################################################################################################
+#free energy の定義
+def Fn():
+    return F1(0,0) + F0(0,0) + Fc(0)
+
+def F1(qs,ans_q):
+    y = -1 + 2 * arange(2)
+    k1 = -1 * np.pi + 2 * arange(N) * np.pi / (N)
+    kx, y = meshgrid(k1, y, indexing='ij')
+    ky, kz = 1, 1
+    g = log(1+exp(-1*beta*E_k_q_s(kx, ky, kz, ans_q, qs, y, Bs[0])))
+    return -1*(1/beta) * sum(g)
+
+def F0(qs,ans_q):
+    k1 = -1 * np.pi + 2 * arange(N) * np.pi / (N)
+    kx = k1
+    ky, kz = 1, 1
+    f = e_k_spin(-1*kx, -1*ky, -1*kz, qs,-1, Bs[0]) - E_k_q_s(kx, ky, kz, ans_q, qs, -1, Bs[0])
+    return sum(f)
+
+def F0_0(qs,ans_q):
+    k1 = -1 * np.pi + 2 * arange(N) * np.pi / (N)
+    kx = k1
+    ky, kz = 1, 1
+    f = e_k_spin(-1*kx, -1*ky, -1*kz, qs,-1, Bs[0])
+    return sum(f)
+
+def F0_1(qs,ans_q):
+    k1 = -1 * np.pi + 2 * arange(N) * np.pi / (N)
+    kx = k1
+    ky, kz = 1, 1
+    f = E_k_q_s(kx, ky, kz, ans_q, qs, -1, Bs[0])
+    return sum(f)
+
+def Fc(ans_q):
+    return(N)*(ans_q**2)/V
+
+def free_energy(qs,ans_q):
+    return (F1(qs,ans_q) + F0(qs,ans_q) + Fc(ans_q) -Fn()) / N#  
+
+###################################################################################################################
+##calculate_freeenergy
+f, extended_GL = [], []
+for j in range(n0-2):
+    ddf_q1 = ((free_energy(qs[j+1],deltas[0]))-(free_energy(qs[j],deltas[0])))/((qs[j+1]-qs[j])*pi)
+    ddf_q2 = ((free_energy(qs[j+2],deltas[0]))-(free_energy(qs[j+1],deltas[0])))/((qs[j+2]-qs[j+1])*pi)
+    dddf_q = (ddf_q2 - ddf_q1)/((qs[j+1]-qs[j])*pi)
+    f.append(dddf_q)
+f = np.array(f)
+
+########################################################################################################################
+#plot the figure of comparing free energy to extended GL
+for i in range(n0):
+    plt.scatter(qs[0:98], f[:], 5)
+    plt.savefig("figure/q-DeltaF.png")
+    plt.clf()
+
+###################################
+##output
+file = open("output/q-\DeltaF", "w")
+file.write("##q-\DeltaF" + "\n")
+for j in range (n0-2):
+    file.write(str(qs[j]) + " " + str(f[j]) + " "  + "\n")
+file.close()
+

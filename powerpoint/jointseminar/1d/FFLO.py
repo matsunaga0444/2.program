@@ -6,11 +6,11 @@ from time import time
 
 ###################################################################################################################
 ##パラメータの調整(1d)
-N, V, t, mu, gu, n0, n1, n2, nscf =100, 1, 1, 0, 1, 10, 1, 1, 2000  #kBT-gap_in_each_q
+N, V, t, mu, gu, n0, n1, n2, nscf =100, 2, 1, 0, 1, 20, 1, 1, 2000  #kBT-gap_in_each_q
 #N, V, t, mu, gu, n0, n1, n2, nscf =100, 1, 1, 0, 1, 1, 1, 10, 2000  #q-gap_in_each_kBT
-qs   = np.linspace(0,0.01,n0)        
+qs   = np.linspace(0,0.11,n0)        
 Bs   = np.linspace(0.0,0.1,n1)     
-kBTs = np.linspace(0.0001,0.025,n2)
+kBTs = np.linspace(0.15,0.1,n2)
 
 # ###################################################################################################################
 # ##パラメータの調整(2d)
@@ -96,38 +96,39 @@ for j in range(n2):
                 file.write(str(kBTs[j]) + " " + str(qs[h]) + " " + str(ans[h][i][j][0]) + " " + str(ans[h][i][j][2]) + " " +  "\n")
 
 ###################################################################################################################
-##figure
-#kBT-gap_in_each_q
-for h in range(n0):  
-    for i in range(n1):
-        figure = plt.scatter(kBTs, ans[h][i][:,0], 5, c=ones(n2)*qs[h],  cmap='viridis' ,vmin=qs[0], vmax=qs[-1])
-c= plt.colorbar()
-plt.tick_params(labelsize=18)
-plt.legend()
-plt.savefig("figure/kBT-gap_in_each_q" + "_N_" + str(N) + "_V_" + str(V) + "_mu_" + str(mu) + "_t_" + str(t) + "_q_[" + str(qs[0]) + "," + str(qs[-1]) + "]_kBT_[" + str(kBTs[0]) + "," + str(kBTs[-1]) + "]_Nq_" + str(n0) + "_NkBT_" + str(n2) + ".png")
-plt.clf() 
+# ##figure
+# #kBT-gap_in_each_q
+# for h in range(n0):  
+#     for i in range(n1):
+#         figure = plt.scatter(kBTs, ans[h][i][:,0], 5, c=ones(n2)*qs[h],  cmap='viridis' ,vmin=qs[0], vmax=qs[-1])
+# c= plt.colorbar()
+# plt.tick_params(labelsize=18)
+# plt.legend()
+# plt.savefig("figure/kBT-gap_in_each_q" + "_N_" + str(N) + "_V_" + str(V) + "_mu_" + str(mu) + "_t_" + str(t) + "_q_[" + str(qs[0]) + "," + str(qs[-1]) + "]_kBT_[" + str(kBTs[0]) + "," + str(kBTs[-1]) + "]_Nq_" + str(n0) + "_NkBT_" + str(n2) + ".png")
+# plt.clf() 
 
-#kBT-iter_in_each_q
-for h in range(n0):   
-    for i in range(n1):
-        figure = plt.scatter(kBTs, ans[h][i][:,2], 5, c=ones(n2)*qs[h],  cmap='viridis' ,vmin=qs[0], vmax=qs[-1])
-c= plt.colorbar()
-plt.savefig("figure/kBT-iter_in_each_q" + "_N_" + str(N) + "_V_" + str(V) + "_mu_" + str(mu) + "_t_" + str(t) + "_q_[" + str(qs[0]) + "," + str(qs[-1]) + "]_kBT_[" + str(kBTs[0]) + "," + str(kBTs[-1]) + "]_Nq_" + str(n0) + "_NkBT_" + str(n2) + ".png")
-plt.clf() 
+# #kBT-iter_in_each_q
+# for h in range(n0):   
+#     for i in range(n1):
+#         figure = plt.scatter(kBTs, ans[h][i][:,2], 5, c=ones(n2)*qs[h],  cmap='viridis' ,vmin=qs[0], vmax=qs[-1])
+# c= plt.colorbar()
+# plt.savefig("figure/kBT-iter_in_each_q" + "_N_" + str(N) + "_V_" + str(V) + "_mu_" + str(mu) + "_t_" + str(t) + "_q_[" + str(qs[0]) + "," + str(qs[-1]) + "]_kBT_[" + str(kBTs[0]) + "," + str(kBTs[-1]) + "]_Nq_" + str(n0) + "_NkBT_" + str(n2) + ".png")
+# plt.clf() 
 
 #q-gap_in_each_kBT
 for j in range(n2):    
     figure = plt.scatter(qs, ans[:,0,j,0], 5, c=ones(n0)*kBTs[j],  cmap='viridis' ,vmin=kBTs[0], vmax=kBTs[-1])
-c= plt.colorbar()
+#c= plt.colorbar()
+plt.tick_params(labelsize=18)
 plt.savefig("figure/q-gap_in_each_kBT" + "_N_" + str(N) + "_V_" + str(V) + "_mu_" + str(mu) + "_t_" + "_q_[" + str(qs[0]) + "," + str(qs[-1]) + "]_kBT_[" + str(kBTs[0]) + "," + str(kBTs[-1]) + "]_Nq_" + str(n0) + "_NkBT_" + str(n2) + ".png")
 plt.clf() 
 
-#q-iter_in_each_kBT
-for j in range(n2):  
-    for i in range(n1):
-            figure = plt.scatter(qs, ans[:,0,j,2], 5, c=ones(n0)*kBTs[j],  cmap='viridis' ,vmin=kBTs[0], vmax=kBTs[-1])
-c= plt.colorbar()
-plt.savefig("figure/q-iter_in_each_kBT" + "_N_" + str(N) + "_V_" + str(V) + "_mu_" + str(mu) + "_t_" + "_q_[" + str(qs[0]) + "," + str(qs[-1]) + "]_kBT_[" + str(kBTs[0]) + "," + str(kBTs[-1]) + "]_Nq_" + str(n0) + "_NkBT_" + str(n2) + ".png")
-plt.clf() 
+# #q-iter_in_each_kBT
+# for j in range(n2):  
+#     for i in range(n1):
+#             figure = plt.scatter(qs, ans[:,0,j,2], 5, c=ones(n0)*kBTs[j],  cmap='viridis' ,vmin=kBTs[0], vmax=kBTs[-1])
+# c= plt.colorbar()
+# plt.savefig("figure/q-iter_in_each_kBT" + "_N_" + str(N) + "_V_" + str(V) + "_mu_" + str(mu) + "_t_" + "_q_[" + str(qs[0]) + "," + str(qs[-1]) + "]_kBT_[" + str(kBTs[0]) + "," + str(kBTs[-1]) + "]_Nq_" + str(n0) + "_NkBT_" + str(n2) + ".png")
+# plt.clf() 
 
 ###################################################################################################################
