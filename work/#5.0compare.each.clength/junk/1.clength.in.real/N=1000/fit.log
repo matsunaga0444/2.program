@@ -1,0 +1,218 @@
+
+
+*******************************************************************************
+Wed Jan 24 03:31:41 2024
+
+
+FIT:    data read from "delta.dat" u 1:4
+        format = x:z
+        #datapoints = 500
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = exp(a*x)
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a            
+   0 nan               nan        inf         1.000000e+00
+
+Current data point
+=========================
+#               = 1 out of 500
+x               = nan            
+z               = 0.0493159      
+
+Current set of parameters
+=========================
+a               = nan            
+
+BREAK: Function evaluation yields NaN ("not a number")
+
+*******************************************************************************
+Wed Jan 24 03:32:02 2024
+
+
+FIT:    data read from "delta.dat" u 1:4
+        format = x:z
+        x range restricted to [0.00000 : 50.0000]
+        #datapoints = 51
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = exp(a*x)
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 1 out of 51
+x               = nan            
+z               = 0.0493159      
+
+Current set of parameters
+=========================
+a               = nan            
+
+BREAK: Function evaluation yields NaN ("not a number")
+
+*******************************************************************************
+Wed Jan 24 03:32:53 2024
+
+
+FIT:    data read from "delta.dat" u 1:4
+        format = x:z
+        x range restricted to [0.00000 : 10.0000]
+        #datapoints = 11
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = exp(a*x)
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 1 out of 11
+x               = nan            
+z               = 0.0493159      
+
+Current set of parameters
+=========================
+a               = nan            
+
+BREAK: Function evaluation yields NaN ("not a number")
+
+*******************************************************************************
+Wed Jan 24 03:33:03 2024
+
+
+FIT:    data read from "delta.dat" u 1:4
+        format = x:z
+        x range restricted to [0.00000 : 17.0000]
+        #datapoints = 18
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = exp(a*x)
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 1 out of 18
+x               = nan            
+z               = 0.0493159      
+
+Current set of parameters
+=========================
+a               = nan            
+
+BREAK: Function evaluation yields NaN ("not a number")
+
+*******************************************************************************
+Wed Jan 24 03:33:11 2024
+
+
+FIT:    data read from "delta.dat" u 1:4
+        format = x:z
+        x range restricted to [1.00000 : 7.00000]
+        #datapoints = 7
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = exp(a*x)
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 1 out of 7
+x               = nan            
+z               = 0.0340774      
+
+Current set of parameters
+=========================
+a               = nan            
+
+BREAK: Function evaluation yields NaN ("not a number")
+
+*******************************************************************************
+Wed Jan 24 03:33:44 2024
+
+
+FIT:    data read from "delta.dat" u 1:4
+        format = x:z
+        x range restricted to [0.00000 : 10.0000]
+        #datapoints = 11
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = exp(a*x)
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 1 out of 11
+x               = nan            
+z               = 0.0493159      
+
+Current set of parameters
+=========================
+a               = nan            
+
+BREAK: Function evaluation yields NaN ("not a number")
+
+*******************************************************************************
+Wed Jan 24 03:34:40 2024
+
+
+FIT:    data read from "delta.dat" u 1:4
+        format = x:z
+        x range restricted to [0.00000 : 10.0000]
+        #datapoints = 11
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = 0.049315938236914394 * exp(a*x)
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 1 out of 11
+x               = nan            
+z               = 0.0493159      
+
+Current set of parameters
+=========================
+a               = nan            
+
+BREAK: Function evaluation yields NaN ("not a number")
+
+*******************************************************************************
+Wed Jan 24 03:34:45 2024
+
+
+FIT:    data read from "delta.dat" u 1:4
+        format = x:z
+        x range restricted to [1.00000 : 7.00000]
+        #datapoints = 7
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = 0.049315938236914394 * exp(a*x)
+fitted parameters initialized with current variable values
+
+
+Current data point
+=========================
+#               = 1 out of 7
+x               = nan            
+z               = 0.0340774      
+
+Current set of parameters
+=========================
+a               = nan            
+
+BREAK: Function evaluation yields NaN ("not a number")

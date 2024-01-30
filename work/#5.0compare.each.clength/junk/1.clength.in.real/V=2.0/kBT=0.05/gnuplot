@@ -1,0 +1,2 @@
+f(x) = a*exp(-1*sqrt(2)*x/b) 
+fit [0:20] f(x) "delta.dat" u 1:4 via a,b

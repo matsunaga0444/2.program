@@ -1,0 +1,34 @@
+set terminal qt font "Helvetica"
+
+set ylabel 'xi/a_0'
+set xlabel 'kBT/t'
+
+#タイトル文字の設定
+set title "kBT dependence of coherence length"
+#タイトルのフォント設定
+set title font"Arial,15"
+
+set xlabel font "Arial,15"
+set ylabel font "Arial,15"
+#ticsはメモリ文字
+set tics font "Arial,15"
+#keyは凡例
+set key font"Arial,15"
+set key left top
+
+# ラベルの位置
+set xlabel offset 0,0
+set ylabel offset 1,0
+#Y軸の余白
+set lmargin 8
+#X軸の余白
+set bmargin 3
+
+set terminal png
+set output "graph.png"
+
+f(x) = a/tanh(b*sqrt(0.06860606060606061/x-1))
+
+fit [0:0.02] f(x) "q" via a,b
+
+plot "q" using 1:2 with points title "exteneded method", f(x) ;

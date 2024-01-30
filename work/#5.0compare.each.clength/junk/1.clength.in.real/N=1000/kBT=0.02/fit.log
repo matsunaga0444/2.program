@@ -1,0 +1,111 @@
+
+
+*******************************************************************************
+Mon Jan 29 00:20:18 2024
+
+
+FIT:    data read from "delta.dat" u 1:4
+        format = x:z
+        x range restricted to [0.00000 : 20.0000]
+        #datapoints = 21
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*exp(-1*sqrt(2)*x/b)
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b            
+   0 1.0619720752e+00   0.00e+00  1.70e-01    1.000000e+00   1.000000e+00
+  10 7.3356309988e-11  -3.70e-09  1.70e-04    3.267840e-04   5.487256e+01
+
+After 10 iterations the fit converged.
+final sum of squares of residuals : 7.33563e-11
+rel. change during last iteration : -3.7e-14
+
+degrees of freedom    (FIT_NDF)                        : 19
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 1.96491e-06
+variance of residuals (reduced chisquare) = WSSR/ndf   : 3.86086e-12
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 0.000326784      +/- 9.25e-07     (0.2831%)
+b               = 54.8726          +/- 0.6003       (1.094%)
+
+correlation matrix of the fit parameters:
+                a      b      
+a               1.000 
+b              -0.811  1.000 
+
+
+*******************************************************************************
+Mon Jan 29 00:23:48 2024
+
+
+FIT:    data read from "delta.dat" u 1:4
+        format = x:z
+        x range restricted to [0.00000 : 100.000]
+        #datapoints = 101
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*exp(-1*sqrt(2)*x/b)
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b            
+   0 5.6719442435e-08   0.00e+00  1.23e-04    3.267840e-04   5.487256e+01
+   5 1.0916689803e-08  -1.69e-03  1.23e-09    3.511669e-04   4.158972e+01
+
+After 5 iterations the fit converged.
+final sum of squares of residuals : 1.09167e-08
+rel. change during last iteration : -1.68804e-08
+
+degrees of freedom    (FIT_NDF)                        : 99
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 1.05009e-05
+variance of residuals (reduced chisquare) = WSSR/ndf   : 1.1027e-10
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 0.000351167      +/- 3.779e-06    (1.076%)
+b               = 41.5897          +/- 0.6546       (1.574%)
+
+correlation matrix of the fit parameters:
+                a      b      
+a               1.000 
+b              -0.701  1.000 
+
+
+*******************************************************************************
+Mon Jan 29 00:23:55 2024
+
+
+FIT:    data read from "delta.dat" u 1:4
+        format = x:z
+        x range restricted to [0.00000 : 100.000]
+        #datapoints = 101
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*exp(-1*sqrt(2)*x/b)
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b            
+   0 1.0916689803e-08   0.00e+00  1.17e-04    3.511669e-04   4.158972e+01
+   1 1.0916688614e-08  -1.09e-02  1.17e-05    3.511638e-04   4.159049e+01
+
+After 1 iterations the fit converged.
+final sum of squares of residuals : 1.09167e-08
+rel. change during last iteration : -1.08851e-07
+
+degrees of freedom    (FIT_NDF)                        : 99
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 1.05009e-05
+variance of residuals (reduced chisquare) = WSSR/ndf   : 1.1027e-10
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 0.000351164      +/- 3.778e-06    (1.076%)
+b               = 41.5905          +/- 0.6546       (1.574%)
+
+correlation matrix of the fit parameters:
+                a      b      
+a               1.000 
+b              -0.701  1.000 

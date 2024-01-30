@@ -231,7 +231,7 @@ FIT:    data read from "q" u 1:2
         residuals are weighted equally (unit weight)
 
 function used for fitting: f(x)
-	f(x) = a/tanh((2.05-0.3095*(x/0.19597979797979798))*sqrt(0.19597979797979798/x-1))
+	f(x) = a/tanh((b-1*c*(x/0.19597979797979798))*sqrt(0.19597979797979798/x-1))
 fitted parameters initialized with current variable values
 
 iter      chisq       delta/lim  lambda   a            

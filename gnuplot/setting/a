@@ -1,0 +1,26 @@
+set ylabel 'acceleration(m/s^2)'
+set xlabel 'time(ms)'
+
+plot string using 5:2 with linespoints title "X axis" , 
+string using 5:3 with linespoints title "Y axis" , 
+string using 5:4 with linespoints title "Z axis" ;
+
+#タイトル文字の設定
+set title "Acceleration force along the XYZ axis"
+#タイトルのフォント設定
+set title font"Arial,20"
+
+set xlabel font "Arial,30"
+set ylabel font "Arial,30"
+#ticsはメモリ文字
+set tics font "Arial,20"
+#keyは凡例
+set key font"Arial,20"
+
+# ラベルの位置
+set xlabel offset 0,0
+set ylabel offset 0,0
+#Y軸の余白
+set lmargin 10
+#X軸の余白
+set bmargin 4

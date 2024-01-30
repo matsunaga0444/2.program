@@ -1,0 +1,38 @@
+set terminal qt font "Helvetica"
+
+set ylabel 'site'
+set xlabel 'gap function'
+
+plot string using 5:2 with linespoints title "X axis" , 
+string using 5:3 with linespoints title "Y axis" , 
+string using 5:4 with linespoints title "Z axis" ;
+
+#タイトル文字の設定
+set title "coherence length in real space"
+#タイトルのフォント設定
+set title font"Arial,15"
+
+set xlabel font "Arial,15"
+set ylabel font "Arial,15"
+#ticsはメモリ文字
+set tics font "Arial,15"
+#keyは凡例
+set key font"Arial,15"
+set key right top
+
+# ラベルの位置
+set xlabel offset 0,0
+set ylabel offset 1,0
+#Y軸の余白
+set lmargin 8
+#X軸の余白
+set bmargin 3
+
+set terminal png
+set output "graph.png"
+
+f(x) = 0.049315938236914394*exp(-1*sqrt(2)*x/)
+
+set logscale y
+
+plot "delta.dat" using 1:4 with points title "exteneded method", f(x) ;
