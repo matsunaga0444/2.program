@@ -1,0 +1,16 @@
+
+rm xi
+
+FILE_NAME=fit_log
+while read LINE
+do
+if [[ $LINE == "FIT"* ]] then
+    echo -n $LINE | sed -r 's/FIT:    data read from "(.*)" u 1:4$/\1/' >>xi
+    echo -n " " >>xi
+fi
+
+if [[ $LINE == "b"* ]] then
+    echo $LINE | sed -r 's@b               = (.*)$@\1@' >>xi
+fi
+
+done < ${FILE_NAME}

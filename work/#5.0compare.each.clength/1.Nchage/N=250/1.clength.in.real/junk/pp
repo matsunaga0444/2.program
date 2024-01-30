@@ -1,0 +1,12 @@
+kBT=(0.001 0.01)
+
+rm fit.log
+
+for file in $kBT ; do
+    sed -e "s@delta.dat@$file@" \
+     -e "s@graph.png@$file.png@"    \
+     a > ./a_$file 
+    gnuplot a_$file
+    rm a_$file
+done
+

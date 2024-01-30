@@ -1,0 +1,8 @@
+
+rm sample.txt1
+FILE_NAME=sample.txt
+while read LINE
+do
+echo $LINE | sed -r 's/H(.*)l$/\1/' >>sample.txt1
+echo $LINE | sed -r 's/H(.*)o$/\1/' >>sample.txt1
+done < ${FILE_NAME}
