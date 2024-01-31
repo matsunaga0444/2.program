@@ -4,7 +4,7 @@ set ylabel 'gap function'
 set xlabel 'site'
 
 #タイトル文字の設定
-set title "coherence length in real space"
+set title "coherence length in real space kBT = delta.dat"
 #タイトルのフォント設定
 set title font"Arial,15"
 
@@ -28,9 +28,9 @@ set terminal png
 set output "graph.png"
 
 f(x) = a*exp(-1*sqrt(2)*x/b)
-fit [0:10] f(x) "delta.dat" u 1:4 via a,b
+fit [12:100] f(x) "delta.dat" u 1:4 via a,b
 
-se xrange[0:100]
+se xrange[0:300]
 
 set logscale y
 

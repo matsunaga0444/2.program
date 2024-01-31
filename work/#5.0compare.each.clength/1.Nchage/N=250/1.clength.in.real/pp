@@ -1,7 +1,7 @@
 
 rm xi
 
-FILE_NAME=fit_log
+FILE_NAME=fit.log
 while read LINE
 do
 if [[ $LINE == "FIT"* ]] then
@@ -9,7 +9,7 @@ if [[ $LINE == "FIT"* ]] then
     echo -n " " >>xi
 fi
 
-if [[ $LINE == "b"* ]] then
+if [[ $LINE == "b               = "* ]] then
     echo $LINE | sed -r 's@b               = (.*)$@\1@' >>xi
 fi
 

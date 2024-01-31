@@ -35,7 +35,6 @@ class calculation:
         _2 = einsum('in,n,nj->ij', conj(self.v),   f, self.u.T, optimize=True)
         self.f = _1 - _2
         self.delta = diag(p.u * diag(self.f))
-        #self.delta[0,0] = self.delta[0,0]*99/100
 
     def scf(self, p):
         lam1 = 0.1

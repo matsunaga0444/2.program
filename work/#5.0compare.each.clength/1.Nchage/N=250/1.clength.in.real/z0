@@ -2,13 +2,13 @@
 
 echo $hoge
 
-sed -e "s@self.beta = .*@self.beta = 1/$hoge@" \
--e "s@delta.dat@$hoge@" main.py > ./$hoge.py
-python $hoge.py 
+# sed -e "s@self.beta = .*@self.beta = 1/$hoge@" \
+# -e "s@delta.dat@$hoge@" main.py > ./$hoge.py
+# python $hoge.py 
 
-wait $!
+# wait $!
 
-rm $hoge.py 
+# rm $hoge.py 
 
 sed -e "s@delta.dat@$hoge@" \
     -e "s@graph.png@$hoge.png@"    \
