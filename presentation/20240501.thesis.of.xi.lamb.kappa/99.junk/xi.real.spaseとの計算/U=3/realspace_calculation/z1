@@ -1,0 +1,9 @@
+kBT=(0.001 0.10 0.20 0.30 0.40)
+
+rm fit.log
+
+for file in $kBT ; do
+   sed -e "s@kBT@$file@" \
+    z0 > z0_$file
+   zsh z0_$file &
+done  

@@ -1,8 +1,0 @@
-
-python main.py
-
-wait $!
-
-python main.py
-
-wait $!

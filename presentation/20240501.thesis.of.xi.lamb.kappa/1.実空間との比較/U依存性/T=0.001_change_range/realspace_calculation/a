@@ -1,0 +1,32 @@
+set terminal qt font "Helvetica"
+
+set ylabel 'gap function'
+set xlabel 'site'
+
+#タイトル文字の設定
+set title "coherence length in real space kBT = delta.dat"
+#タイトルのフォント設定
+set title font"Arial,15"
+
+set xlabel font "Arial,15"
+set ylabel font "Arial,15"
+#ticsはメモリ文字
+set tics font "Arial,15"
+#keyは凡例
+set key font"Arial,15"
+set key right top
+
+# ラベルの位置
+set xlabel offset 0,0
+set ylabel offset 1,0
+#Y軸の余白
+set lmargin 12
+#X軸の余白
+set bmargin 3
+
+set terminal png
+set output "graph.png"
+
+se xrange[0:500]
+
+plot "2.5000000000" using 1:3 with points;

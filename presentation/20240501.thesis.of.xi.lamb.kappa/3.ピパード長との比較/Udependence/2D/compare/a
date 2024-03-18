@@ -1,0 +1,39 @@
+res
+
+set terminal qt font "Helvetica"
+
+set ylabel 'lambda/a_0'
+set xlabel 'kBT/t'
+
+#タイトル文字の設定
+set title "Comparison of kBT dependence of coherence length"
+#タイトルのフォント設定
+set title font"Arial,15"
+
+set xlabel font "Arial,15"
+set ylabel font "Arial,15"
+#ticsはメモリ文字
+set tics font "Arial,15"
+#keyは凡例
+set key font"Arial,15"
+set key left top
+
+# ラベルの位置
+set xlabel offset 0,0
+set ylabel offset 1,0
+#Y軸の余白
+set lmargin 8
+#X軸の余白
+set bmargin 3
+
+set terminal png
+set output "../2D.png"
+
+se xrange[0:3]
+
+se yrange[0:20]
+
+plot "p" using ($1):($2) with lp  title "with GL", "xi_Ex_GL" using ($1):($2) with lp title "with Extended GL"
+#plot "N=1000" using 1:2 with linespoints lc rgb "orange-red" title "\xi ", "xi" using 1:2 with linespoints lc rgb "dark-violet" title "xi_{real} N=1000"
+
+

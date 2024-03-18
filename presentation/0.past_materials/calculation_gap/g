@@ -1,0 +1,36 @@
+set terminal qt font "Helvetica"
+
+set ylabel 'gap function'
+set xlabel 'kBTs'
+
+#タイトル文字の設定
+set title "fitting gap value in BCS"
+#タイトルのフォント設定
+set title font"Arial,15"
+
+set xlabel font "Arial,15"
+set ylabel font "Arial,15"
+#ticsはメモリ文字
+set tics font "Arial,15"
+#keyは凡例
+set key font"Arial,15"
+set key right top
+set key left bottom
+
+# ラベルの位置
+set xlabel offset 0,0
+set ylabel offset 1,0
+#Y軸の余白
+set lmargin 12
+#X軸の余白
+set bmargin 3
+
+set terminal png
+set output "graph.png"
+
+f(x) = a*tanh(b*sqrt((c-x)/x))
+fit [0:0.2] f(x) "kBT-gap" u 1:2 via a,b,c
+
+se xrange[0:0.2]
+
+plot "kBT-gap" using 1:2 with points title "gap value in BCS", f(x) title "fit" ;

@@ -1,0 +1,9 @@
+
+kBT=(0.001 0.01)
+
+for file in $kBT ; do
+    sed -e "s@self.beta = .*@self.beta = 1/$file@" \
+    -e "s@delta.dat@$file@" main.py > ./$file.py
+    python $file.py &
+done  
+

@@ -222,7 +222,7 @@ def calculate_e(x_1, y_1, x_2, y_2, q):
 ## find the coefficients of extended GL free energy
 n2 = 100
 #kBTs  = np.linspace(0, Tc, n2)
-kBTs  = np.linspace(0, 0.175, n2)
+kBTs  = np.linspace(0, 0.2, n2)
 print(ans[0][0][0][0])
 a_0 = calculate_a_1(ans[0,0,0,0], ans_F[0])
 a = calculate_a(ans[0,0,0,0], ans_F[0], kBTs[0], kBTs, Tc)
@@ -238,6 +238,9 @@ def c_l_puterbation_GL(a, d):
 def c_l_puterbation_extended_GL(a, b, d, e):
     return sqrt(-1*(d[:,None]/a[None,:]) + (e[:,None]/(2*b)) )
 def coherence_length_GL_formulation(gap_q, gap_0, q):
+    print(gap_0,gap_q)
+    print((gap_0**2 - gap_q**2))
+    print((gap_0**2*q**2*pi**2))
     return sqrt((gap_0**2 - gap_q**2) / (gap_0**2*q**2*pi**2))
 def c_l_puterbation_extended_GL_square(a, b, d, e):
     return -1*(d[:,None]/a[None,:]) + (e[:,None]/(2*b)) 

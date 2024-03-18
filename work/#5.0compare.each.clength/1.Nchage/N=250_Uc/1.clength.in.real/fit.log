@@ -1,0 +1,32 @@
+
+
+*******************************************************************************
+Wed Jan 31 11:08:27 2024
+
+
+FIT:    data read from "0.0010000000" u 1:4
+        format = x:z
+        x range restricted to [7.00000 : 30.0000]
+        #datapoints = 24
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*exp(-1*sqrt(2)*x/b)
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b            
+   0 2.6783488026e-09   0.00e+00  7.53e-05    1.000000e+00   1.000000e+00
+   9 7.5271008834e-31  -2.48e-06  7.53e-14    2.843893e-11   7.128307e-01
+
+After 9 iterations the fit converged.
+final sum of squares of residuals : 7.5271e-31
+abs. change during last iteration : -1.8685e-41
+
+
+Hmmmm.... Sum of squared residuals is zero. Can't compute errors.
+
+Final set of parameters 
+======================= 
+
+a               = 2.84389e-11    
+b               = 0.712831       

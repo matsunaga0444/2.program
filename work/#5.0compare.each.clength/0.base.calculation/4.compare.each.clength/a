@@ -29,4 +29,9 @@ set bmargin 3
 set terminal png
 set output "graph.png"
 
-plot "xi_1000_real" using 1:2 with points title "xi_{real} N=1000", "N=1000" using 1:2 with points title "xi_{m} N=1000", "q=0.00001" using 1:2 with points title "xi_{N} q=0.00001"
+se xrange[0:0.195]
+
+#plot "xi" using 1:2 with points title "xi_{real} N=1000", "N=1000" using 1:2 with points title "xi_{m} N=1000", "q=0.001" using 1:2 with points title "xi_{N} q=0.001"
+plot "N=1000" using 1:2 with linespoints lc rgb "orange-red" title "\xi ", "xi" using 1:2 with linespoints lc rgb "dark-violet" title "xi_{real} N=1000"
+#plot "N=1000" using 1:2 with linespoints lc rgb "orange-red" title "\xi ", "q" using 1:2 with linespoints lc rgb "grey50" title "q=0.00001"
+

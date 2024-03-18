@@ -1,0 +1,234 @@
+
+
+*******************************************************************************
+Tue Feb 13 02:33:06 2024
+
+
+FIT:    data read from "kBT-gap" u 1:2
+        format = x:z
+        x range restricted to [0.00000 : 0.200000]
+        #datapoints = 100
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*tanh(b*sqrt((c-x)/x))
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b             c            
+   0 5.1291329018e+01   0.00e+00  5.73e-01    1.000000e+00   1.000000e+00   1.000000e+00
+  66 4.9492894541e-04   0.00e+00  5.73e+05    3.424772e-01   1.780234e+00   1.940181e-01
+
+After 66 iterations the fit converged.
+final sum of squares of residuals : 0.000494929
+rel. change during last iteration : 0
+
+degrees of freedom    (FIT_NDF)                        : 97
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00225884
+variance of residuals (reduced chisquare) = WSSR/ndf   : 5.10236e-06
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 0.342477         +/- 0.0003665    (0.107%)
+b               = 1.78023          +/- 0.007479     (0.4201%)
+c               = 0.194018         +/- 0.0001062    (0.05475%)
+
+correlation matrix of the fit parameters:
+                a      b      c      
+a               1.000 
+b              -0.654  1.000 
+c               0.205 -0.583  1.000 
+
+
+*******************************************************************************
+Tue Feb 13 02:34:09 2024
+
+
+FIT:    data read from "kBT-gap" u 1:2
+        format = x:z
+        x range restricted to [0.00000 : 0.200000]
+        #datapoints = 100
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*tanh(b*sqrt((c-x)/x))
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b             c            
+   0 5.1291329018e+01   0.00e+00  5.73e-01    1.000000e+00   1.000000e+00   1.000000e+00
+  66 4.9492894541e-04   0.00e+00  5.73e+05    3.424772e-01   1.780234e+00   1.940181e-01
+
+After 66 iterations the fit converged.
+final sum of squares of residuals : 0.000494929
+rel. change during last iteration : 0
+
+degrees of freedom    (FIT_NDF)                        : 97
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00225884
+variance of residuals (reduced chisquare) = WSSR/ndf   : 5.10236e-06
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 0.342477         +/- 0.0003665    (0.107%)
+b               = 1.78023          +/- 0.007479     (0.4201%)
+c               = 0.194018         +/- 0.0001062    (0.05475%)
+
+correlation matrix of the fit parameters:
+                a      b      c      
+a               1.000 
+b              -0.654  1.000 
+c               0.205 -0.583  1.000 
+
+
+*******************************************************************************
+Tue Feb 13 02:34:58 2024
+
+
+FIT:    data read from "kBT-gap" u 1:2
+        format = x:z
+        x range restricted to [0.00000 : 0.200000]
+        #datapoints = 100
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*tanh(b*sqrt((c-x)/x))
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b             c            
+   0 5.1291329018e+01   0.00e+00  5.73e-01    1.000000e+00   1.000000e+00   1.000000e+00
+  66 4.9492894541e-04   0.00e+00  5.73e+05    3.424772e-01   1.780234e+00   1.940181e-01
+
+After 66 iterations the fit converged.
+final sum of squares of residuals : 0.000494929
+rel. change during last iteration : 0
+
+degrees of freedom    (FIT_NDF)                        : 97
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00225884
+variance of residuals (reduced chisquare) = WSSR/ndf   : 5.10236e-06
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 0.342477         +/- 0.0003665    (0.107%)
+b               = 1.78023          +/- 0.007479     (0.4201%)
+c               = 0.194018         +/- 0.0001062    (0.05475%)
+
+correlation matrix of the fit parameters:
+                a      b      c      
+a               1.000 
+b              -0.654  1.000 
+c               0.205 -0.583  1.000 
+
+
+*******************************************************************************
+Tue Feb 13 02:35:51 2024
+
+
+FIT:    data read from "kBT-gap" u 1:2
+        format = x:z
+        x range restricted to [0.00000 : 0.200000]
+        #datapoints = 100
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*tanh(b*sqrt((c-x)/x))
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b             c            
+   0 5.1291329018e+01   0.00e+00  5.73e-01    1.000000e+00   1.000000e+00   1.000000e+00
+  66 4.9492894541e-04   0.00e+00  5.73e+05    3.424772e-01   1.780234e+00   1.940181e-01
+
+After 66 iterations the fit converged.
+final sum of squares of residuals : 0.000494929
+rel. change during last iteration : 0
+
+degrees of freedom    (FIT_NDF)                        : 97
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00225884
+variance of residuals (reduced chisquare) = WSSR/ndf   : 5.10236e-06
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 0.342477         +/- 0.0003665    (0.107%)
+b               = 1.78023          +/- 0.007479     (0.4201%)
+c               = 0.194018         +/- 0.0001062    (0.05475%)
+
+correlation matrix of the fit parameters:
+                a      b      c      
+a               1.000 
+b              -0.654  1.000 
+c               0.205 -0.583  1.000 
+
+
+*******************************************************************************
+Tue Feb 13 02:36:38 2024
+
+
+FIT:    data read from "kBT-gap" u 1:2
+        format = x:z
+        x range restricted to [0.00000 : 0.200000]
+        #datapoints = 100
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*tanh(b*sqrt((c-x)/x))
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b             c            
+   0 5.1291329018e+01   0.00e+00  5.73e-01    1.000000e+00   1.000000e+00   1.000000e+00
+  66 4.9492894541e-04   0.00e+00  5.73e+05    3.424772e-01   1.780234e+00   1.940181e-01
+
+After 66 iterations the fit converged.
+final sum of squares of residuals : 0.000494929
+rel. change during last iteration : 0
+
+degrees of freedom    (FIT_NDF)                        : 97
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00225884
+variance of residuals (reduced chisquare) = WSSR/ndf   : 5.10236e-06
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 0.342477         +/- 0.0003665    (0.107%)
+b               = 1.78023          +/- 0.007479     (0.4201%)
+c               = 0.194018         +/- 0.0001062    (0.05475%)
+
+correlation matrix of the fit parameters:
+                a      b      c      
+a               1.000 
+b              -0.654  1.000 
+c               0.205 -0.583  1.000 
+
+
+*******************************************************************************
+Tue Feb 13 02:38:46 2024
+
+
+FIT:    data read from "kBT-gap" u 1:2
+        format = x:z
+        x range restricted to [0.00000 : 0.200000]
+        #datapoints = 100
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*tanh(b*sqrt((c-x)/x))
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b             c            
+   0 5.1291329018e+01   0.00e+00  5.73e-01    1.000000e+00   1.000000e+00   1.000000e+00
+  66 4.9492894541e-04   0.00e+00  5.73e+05    3.424772e-01   1.780234e+00   1.940181e-01
+
+After 66 iterations the fit converged.
+final sum of squares of residuals : 0.000494929
+rel. change during last iteration : 0
+
+degrees of freedom    (FIT_NDF)                        : 97
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.00225884
+variance of residuals (reduced chisquare) = WSSR/ndf   : 5.10236e-06
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 0.342477         +/- 0.0003665    (0.107%)
+b               = 1.78023          +/- 0.007479     (0.4201%)
+c               = 0.194018         +/- 0.0001062    (0.05475%)
+
+correlation matrix of the fit parameters:
+                a      b      c      
+a               1.000 
+b              -0.654  1.000 
+c               0.205 -0.583  1.000 
