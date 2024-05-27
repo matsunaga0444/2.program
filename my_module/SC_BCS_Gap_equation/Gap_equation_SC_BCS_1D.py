@@ -37,7 +37,7 @@ def scf_1D(n0, n1, n2, kBTs, ini_gap, nscf, N, t, q, mu, gu, B, V):
             ans0.append(ans1)
         ans.append(ans0)
     ans = array(ans)
-    return ans #   [q][B][kBTs][d0, abs(d1-d0), k]
+    return ans #   [qs][Bs][kBTs][d0, abs(d1-d0), k]
 
 def scf_1D_simple(kBT, ini_gap, nscf, N, t, q, mu, gu, B, V):
     beta, d0 = 1/kBT, ini_gap

@@ -18,7 +18,7 @@ kBTs = linspace(0.001,0.2,n2)
 
 xi = []
 for i in range(n2):
-    xi_GL    = Gap_equation_SC_BCS_1D.scf_1D_simple(kBTs[i], ini_gap, nscf, N, t, qs[0], mu, gu, Bs[0], V)
+    xi_GL    = array(Gap_equation_SC_BCS_1D.scf_1D_simple(kBTs[i], ini_gap, nscf, N, t, qs[0], mu, gu, Bs[0], V)) **2
     xi.append(xi_GL)
 xi = array(xi)
 
