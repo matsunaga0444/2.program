@@ -24,8 +24,9 @@ k1 = (-1 + 2 * arange(N)/N) *pi
 k2 = 1
 k3 = 1
 
-#DOSの要素の列を作る必要あり、
+#DOSの要素の列を作る
 DOS_mesh = (-(2*t/mesh_DOS) + arange(4*t/mesh_DOS)) 
+
 print(DOS_mesh)
 DOS_mesh = DOS_mesh.tolist()
 int_DOS =e_k_spin(k1, k2, k3, 0, 0, 0) / mesh_DOS
@@ -42,7 +43,8 @@ print(DOS_count)
 
 ###################################################################################################################
 ## plot DOS
-
-plt.scatter(DOS_mesh, DOS_count, 5)
+DOS_mesh = array(DOS_mesh)
+DOS_count = array(DOS_count)
+plt.scatter(mesh_DOS * DOS_mesh, DOS_count/N, 5)
 plt.savefig("figure/1D_DOS")
 plt.show

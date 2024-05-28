@@ -6,7 +6,7 @@ from SC_BCS_free_energy import free_energy_SC_BCS_3D
 from SC_BCS_Gap_equation import Gap_equation_SC_BCS_3D
 
 ##パラメータの調整
-N, V, t, mu, gu, n0, n1, n2, nscf =200, 1, 1 , 0, 1, 1, 1, 30, 2000  # 7.525 #9.21
+N, V, t, mu, gu, n0, n1, n2, nscf =300, 1, 1 , 0, 1, 1, 1, 30, 2000  # 7.525 #9.21
 n_search, error, check_gap =100, 1e-10, 1e-6
 kBT_a, kBT_b = 0.0001, 2
 dq = 0.001

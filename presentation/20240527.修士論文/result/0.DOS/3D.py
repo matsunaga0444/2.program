@@ -6,8 +6,8 @@ from time import time
 
 ###################################################################################################################
 ##パラメータの調整(1d)
-N, V, t, mu, gu, n0, n1, n2, nscf =100, 1, 1, 0, 1, 10, 1, 10, 2000  #kBT-gap_in_each_q
-mesh_DOS = 0.1
+N, V, t, mu, gu, n0, n1, n2, nscf =1000, 1, 1, 0, 1, 10, 1, 10, 2000  #kBT-gap_in_each_q
+mesh_DOS = 0.05
 
 ###################################################################################################################
 ## gap_eq をdef
@@ -39,7 +39,8 @@ for i in range(len(DOS_mesh)):
 
 ###################################################################################################################
 ## plot DOS
-
-plt.scatter(DOS_mesh, DOS_count, 5)
+DOS_mesh = array(DOS_mesh)
+DOS_count = array(DOS_count)
+plt.scatter(mesh_DOS * DOS_mesh, DOS_count/N**3, 5)
 plt.savefig("figure/3D_DOS")
 plt.show

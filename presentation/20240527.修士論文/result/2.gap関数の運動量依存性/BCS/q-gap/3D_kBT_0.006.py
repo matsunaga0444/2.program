@@ -1,11 +1,11 @@
 from numpy import *
 import matplotlib.pyplot as plt
 import sys 
-sys.path.append("/Users/matsunagahibiki/Documents/#0.resesarch/2program/my_module")
+sys.path.append("../../../../../../my_module")
 from SC_BCS_Gap_equation import Gap_equation_SC_BCS_3D
 
 ##パラメータの調整
-N, V, t, mu, gu, n0, n1, n2, nscf =30, 1, 1 , 0, 1, 100, 1, 1, 2000  # 7.525 #9.21
+N, V, t, mu, gu, n0, n1, n2, nscf =300, 1, 1 , 0, 1, 100, 1, 1, 2000  # 7.525 #9.21
 n_search, error, check_gap =100, 1e-10, 1e-6
 kBT_a, kBT_b = 0.0001, 2
 dq = 0.001
